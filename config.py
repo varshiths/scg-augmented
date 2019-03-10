@@ -17,7 +17,7 @@ def stanford_path(fn):
 # =============================================================================
 # Update these with where your data is stored ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-VG_IMAGES = '/home/rowan/datasets2/VG_100K_2/VG_100K'
+VG_IMAGES = 'data/visgenome/VG_100K'
 RCNN_CHECKPOINT_FN = path('faster_rcnn_500k.h5')
 
 IM_DATA_FN = stanford_path('image_data.json')
@@ -25,7 +25,7 @@ VG_SGG_FN = stanford_path('VG-SGG.h5')
 VG_SGG_DICT_FN = stanford_path('VG-SGG-dicts.json')
 PROPOSAL_FN = stanford_path('proposals.h5')
 
-COCO_PATH = '/home/rowan/datasets/mscoco'
+COCO_PATH = 'data/coco'
 # =============================================================================
 # =============================================================================
 
@@ -102,6 +102,10 @@ class ModelConfig(object):
         self.pass_in_obj_feats_to_edge = None
         self.pooling_dim = None
         self.rec_dropout = None
+
+        self.distillation_weight = None
+        self.prior_weight = None
+
         self.parser = self.setup_parser()
         self.args = vars(self.parser.parse_args())
 
@@ -168,25 +172,27 @@ class ModelConfig(object):
         parser.add_argument('-clip', dest='clip', help='gradients will be clipped to have norm less than this', type=float, default=5.0)
         parser.add_argument('-p', dest='print_interval', help='print during training', type=int,
                             default=100)
+        
         parser.add_argument('-m', dest='mode', help='mode \in {sgdet, sgcls, predcls}', type=str,
                             default='sgdet')
         parser.add_argument('-model', dest='model', help='which model to use? (motifnet, stanford). If you want to use the baseline (NoContext) model, then pass in motifnet here, and nl_obj, nl_edge=0', type=str,
                             default='motifnet')
+
         parser.add_argument('-old_feats', dest='old_feats', help='Use the original image features for the edges', action='store_true')
-        parser.add_argument('-order', dest='order', help='Linearization order for Rois (confidence -default, size, random)',
-                            type=str, default='confidence')
+        parser.add_argument('-order', dest='order', help='Linearization order for Rois (confidence -default, size, random, leftright)',
+                            type=str, default='leftright')
         parser.add_argument('-cache', dest='cache', help='where should we cache predictions', type=str,
                             default='')
         parser.add_argument('-gt_box', dest='gt_box', help='use gt boxes during training', action='store_true')
         parser.add_argument('-adam', dest='adam', help='use adam. Not recommended', action='store_true')
         parser.add_argument('-test', dest='test', help='test set', action='store_true')
         parser.add_argument('-multipred', dest='multi_pred', help='Allow multiple predicates per pair of box0, box1.', action='store_true')
-        parser.add_argument('-nepoch', dest='num_epochs', help='Number of epochs to train the model for',type=int, default=25)
+        parser.add_argument('-nepoch', dest='num_epochs', help='Number of epochs to train the model for',type=int, default=50)
         parser.add_argument('-resnet', dest='use_resnet', help='use resnet instead of VGG', action='store_true')
         parser.add_argument('-proposals', dest='use_proposals', help='Use Xu et als proposals', action='store_true')
-        parser.add_argument('-nl_obj', dest='nl_obj', help='Num object layers', type=int, default=1)
-        parser.add_argument('-nl_edge', dest='nl_edge', help='Num edge layers', type=int, default=2)
-        parser.add_argument('-hidden_dim', dest='hidden_dim', help='Num edge layers', type=int, default=256)
+        parser.add_argument('-nl_obj', dest='nl_obj', help='Num object layers', type=int, default=2)
+        parser.add_argument('-nl_edge', dest='nl_edge', help='Num edge layers', type=int, default=4)
+        parser.add_argument('-hidden_dim', dest='hidden_dim', help='Num edge layers', type=int, default=512)
         parser.add_argument('-pooling_dim', dest='pooling_dim', help='Dimension of pooling', type=int, default=4096)
         parser.add_argument('-pass_in_obj_feats_to_decoder', dest='pass_in_obj_feats_to_decoder', action='store_true')
         parser.add_argument('-pass_in_obj_feats_to_edge', dest='pass_in_obj_feats_to_edge', action='store_true')
@@ -194,4 +200,7 @@ class ModelConfig(object):
         parser.add_argument('-use_bias', dest='use_bias',  action='store_true')
         parser.add_argument('-use_tanh', dest='use_tanh',  action='store_true')
         parser.add_argument('-limit_vision', dest='limit_vision',  action='store_true')
+
+        parser.add_argument('-prior_weight', dest='prior_weight', help='weight of prior to teacher', type=float, default=1.0)
+        parser.add_argument('-distillation_weight', dest='distillation_weight', help='parameter controlling distillation extent from/to teacher', type=float, default=0.5)
         return parser

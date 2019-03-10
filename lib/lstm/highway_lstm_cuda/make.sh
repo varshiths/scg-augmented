@@ -2,6 +2,8 @@
 
 CUDA_PATH=/usr/local/cuda/
 
+NVCC_PATH="/usr/bin/nvcc"
+
 # Which CUDA capabilities do we want to pre-build for?
 # https://developer.nvidia.com/cuda-gpus
 #   Compute/shader model   Cards
@@ -37,6 +39,6 @@ echo $CUDA_MODEL_TARGETS
 
 cd src
 echo "Compiling kernel"
-/usr/local/cuda/bin/nvcc -c -o highway_lstm_kernel.cu.o highway_lstm_kernel.cu --compiler-options -fPIC $CUDA_MODEL_TARGETS
+$NVCC_PATH -c -o highway_lstm_kernel.cu.o highway_lstm_kernel.cu --compiler-options -fPIC $CUDA_MODEL_TARGETS
 cd ../
 python build.py

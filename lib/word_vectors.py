@@ -46,6 +46,8 @@ URL = {
 
 def load_word_vectors(root, wv_type, dim):
     """Load word vectors from a path, trying .pt, .txt, and .zip extensions."""
+    # import pdb; pdb.set_trace()
+
     if isinstance(dim, int):
         dim = str(dim) + 'd'
     fname = os.path.join(root, wv_type + '.' + dim)

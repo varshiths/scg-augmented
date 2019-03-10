@@ -4,6 +4,7 @@ File that involves dataloaders for the Visual Genome dataset.
 
 import json
 import os
+from tqdm import tqdm
 
 import h5py
 import numpy as np
@@ -247,16 +248,21 @@ def load_image_filenames(image_file, image_dir=VG_IMAGES):
     with open(image_file, 'r') as f:
         im_data = json.load(f)
 
+    # import pdb; pdb.set_trace()
+
     corrupted_ims = ['1592.jpg', '1722.jpg', '4616.jpg', '4617.jpg']
     fns = []
-    for i, img in enumerate(im_data):
+    for i, img in enumerate(tqdm(im_data)):
         basename = '{}.jpg'.format(img['image_id'])
         if basename in corrupted_ims:
             continue
 
         filename = os.path.join(image_dir, basename)
+        filename_2 = os.path.join(image_dir + "_2", basename)
         if os.path.exists(filename):
             fns.append(filename)
+        elif os.path.exists(filename_2):
+            fns.append(filename_2)
     assert len(fns) == 108073
     return fns
 
