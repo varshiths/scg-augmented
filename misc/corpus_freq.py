@@ -48,22 +48,40 @@ def get_tuples(cap):
 
 num_classes = len(objs)
 num_predicates = len(preds)
-grels = np.zeros((
-    num_classes,
-    num_classes,
-    num_predicates,
-), dtype=np.int64)
 
 # corpus is one sentence in each line
 with codecs.open("data/visgenome/captions.txt") as f:
     print("Reading file...")
     caps = [ x.strip() for x in f.readlines() ]
 
-for i, cap in enumerate(tqdm(caps)):
-    # print("{}: {}".format(i, cap))
-    tups = get_tuples(cap)
-    for s, r, o in tups:
-        if r in preds and s in objs and o in objs:
-            grels[ class_to_ind[s], class_to_ind[o], predicate_to_ind[r] ] += 1
+# from joblib import Parallel, delayed
+import multiprocessing
+import math
 
-np.save("data/captions_freq.npy", grels)
+def batch_iterate(caps, nthreads):
+    nitems = len(caps)
+    batch_size = math.ceil(nitems / nthreads)
+    for i in range(nthreads):
+        yield caps[ i*batch_size : (i+1)*batch_size ]
+
+def myfunc(batch_caps):
+    grels = np.zeros((
+        num_classes,
+        num_classes,
+        num_predicates,
+    ), dtype=np.int64)
+    for i, cap in enumerate(tqdm(batch_caps)):
+        # print("{}: {}".format(i, cap))
+        tups = get_tuples(cap)
+        for s, r, o in tups:
+            if r in preds and s in objs and o in objs:
+                grels[ class_to_ind[s], class_to_ind[o], predicate_to_ind[r] ] += 1
+    return grels
+
+num_cores = multiprocessing.cpu_count()
+# num_cores = 2
+pool = multiprocessing.Pool(processes=num_cores)
+results = sum(pool.map( myfunc, batch_iterate(caps, nthreads=num_cores) ))
+# results = myfunc(caps)
+
+np.save("data/captions_freq.npy", results)
