@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export CUDA_VISIBLE_DEVICES=2
+export CUDA_VISIBLE_DEVICES=1
 
 RPATH=$(pwd)
 # RPATH=$(dirname `pwd`)
@@ -14,8 +14,8 @@ python models/eval_rels_tc.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-leftright-sgdet-tc/vgrel-8.tar \
-    -cache cache/motifnet_sgdet
+    -ckpt checkpoints/motifnet-leftright-sgdet-tc/vgrel-9.tar \
+    -cache cache/motifnet_sgcls
 
 # python models/eval_rels.py \
 #     -m predcls \
