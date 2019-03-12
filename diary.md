@@ -15,3 +15,29 @@ R@20: 0.317 / 0.322
 R@50: 0.347 / 0.350  
 R@100: 0.355 / 0.357  
 
+Left-Right ordering of objects is optimal. Freezing the choice of the order.  
+
+Training currently:  
+1. sgdet with prior bias  
+2. sdget with no bias  
+
+sgdet:
+R@20: 0.317 / 0.322  
+R@50: 0.347 / 0.350  
+R@100: 0.355 / 0.357  
+
+sgcls:
+R@20: 0.317 / 0.322  
+R@50: 0.347 / 0.350  
+R@100: 0.355 / 0.357  
+
+predcls:
+R@20: 0.317 / 0.322  
+R@50: 0.347 / 0.350  
+R@100: 0.355 / 0.357  
+
+Completed pipeline setup for relations prior extraction from corpus. Added file in misc.
+
+Will train:  
+1. sgdet with captions corpus bias  
+2. sgdet with bias from visgenome  
