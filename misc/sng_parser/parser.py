@@ -10,8 +10,9 @@
 # https://github.com/vacancy/SceneGraphParser
 
 import spacy
+spacy.prefer_gpu()
 
-__all__ = ['Parser', 'get_default_parser', 'parse']
+__all__ = ['Parser', 'get_default_parser', 'parse', 'batch_parse']
 
 
 class Parser(object):
@@ -55,6 +56,9 @@ class Parser(object):
         Get the backend.
         """
         return self._inst
+
+    def batch_parse(self, sentences, batch_size, n_threads):
+        return self.unwrapped.batch_parse(sentences, batch_size, n_threads)
 
     def parse(self, sentence, **kwargs):
         """
@@ -120,4 +124,7 @@ def parse(sentence, **kwargs):
     this parser everywhere.
     """
     return get_default_parser().parse(sentence, **kwargs)
+
+def batch_parse(sentences, batch_size, n_threads):
+    return get_default_parser().batch_parse(sentences, batch_size, n_threads)
 

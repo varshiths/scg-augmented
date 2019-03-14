@@ -5,7 +5,7 @@ Generates the biases from given corpus and places in data folder
 uses spacy backend.
 
 to setup:
-pip install -U spacy
+pip install -U spacy[cuda92]
 python -m spacy download en
 '''
 
@@ -16,6 +16,10 @@ import codecs
 
 from tqdm import tqdm
 
+VG_SGG_DICT_FN = "data/stanford_filtered/VG-SGG-dicts.json"
+CAPTIONS_FILE = "data/visgenome/captions.txt"
+OUTPUT_FILE = "data/captions_freq.npy"
+
 def load_info(info_file):
     info = json.load(open(info_file, 'r'))
     info['label_to_idx']['__background__'] = 0
@@ -24,14 +28,12 @@ def load_info(info_file):
     predicate_to_ind = info['predicate_to_idx']
     return class_to_ind, predicate_to_ind
 
-VG_SGG_DICT_FN = "data/stanford_filtered/VG-SGG-dicts.json"
 class_to_ind, predicate_to_ind = load_info(VG_SGG_DICT_FN)
 
 objs = class_to_ind.keys()
 preds = predicate_to_ind.keys()
 
-def get_tuples(cap):
-    graph = sng_parser.parse(cap)
+def get_tuples(graph):
     entities = graph["entities"]
     relations = graph["relations"]
     tups = []
@@ -50,9 +52,9 @@ num_classes = len(objs)
 num_predicates = len(preds)
 
 # corpus is one sentence in each line
-with codecs.open("data/visgenome/captions.txt") as f:
+with codecs.open(CAPTIONS_FILE) as f:
     print("Reading file...")
-    caps = [ x.strip() for x in f.readlines() ]
+    caps = [ x.strip() for x in f.readlines() if x.strip() != "" ]
 
 # from joblib import Parallel, delayed
 import multiprocessing
@@ -72,16 +74,34 @@ def myfunc(batch_caps):
     ), dtype=np.int64)
     for i, cap in enumerate(tqdm(batch_caps)):
         # print("{}: {}".format(i, cap))
-        tups = get_tuples(cap)
+        tups = get_tuples(sng_parser.parse(cap))
         for s, r, o in tups:
             if r in preds and s in objs and o in objs:
                 grels[ class_to_ind[s], class_to_ind[o], predicate_to_ind[r] ] += 1
     return grels
 
-num_cores = multiprocessing.cpu_count()
-# num_cores = 2
-pool = multiprocessing.Pool(processes=num_cores)
-results = sum(pool.map( myfunc, batch_iterate(caps, nthreads=num_cores) ))
+def mygraphfunc(batch_graphs):
+    grels = np.zeros((
+        num_classes,
+        num_classes,
+        num_predicates,
+    ), dtype=np.int64)
+    for i, graph in enumerate(tqdm(batch_graphs)):
+        # print("{}: {}".format(i, cap))
+        tups = get_tuples(graph)
+        for s, r, o in tups:
+            if r in preds and s in objs and o in objs:
+                grels[ class_to_ind[s], class_to_ind[o], predicate_to_ind[r] ] += 1
+    return grels
+
+
+# num_cores = multiprocessing.cpu_count()
+# # num_cores = 2
+# pool = multiprocessing.Pool(processes=num_cores)
+# results = sum(pool.map( myfunc, batch_iterate(caps, nthreads=num_cores) ))
 # results = myfunc(caps)
 
-np.save("data/captions_freq.npy", results)
+graphs = sng_parser.batch_parse(caps, batch_size=100000, n_threads=4)
+results = mygraphfunc(graphs)
+
+np.save(OUTPUT_FILE, results)

@@ -43,7 +43,26 @@ class SpacyParser(object):
         except OSError as e:
             raise ImportError('Unable to load the English model. Run `python -m spacy download en` first.') from e
 
+    def batch_parse(self, sentences, batch_size, n_threads):
+        '''
+        Use spacy's inbuilt parallelization of the model 
+        '''
+        from tqdm import tqdm
+        ret = []
+        for doc in tqdm(self.nlp.pipe(sentences, batch_size, n_threads), total=len(sentences)):
+            ret.append(self.doc_parse(doc[0]))
+        return ret
+
+        # return [self.doc_parse(doc[0]) for doc in self.nlp.pipe(sentences, batch_size, n_threads)]
+
     def parse(self, sentence):
+        '''
+        serial parse of each sentence
+        '''
+        doc = self.nlp(sentence)
+        return self.doc_parse(doc)
+
+    def doc_parse(self, doc):
         """
         The spaCy-based parser parse the sentence into scene graphs based on the dependency parsing
         of the sentence by spaCy.
@@ -58,9 +77,8 @@ class SpacyParser(object):
             in the code for better explanation.
             3. determine all the relations among entities.
         """
-        doc = self.nlp(sentence)
-
         # Step 1: determine the entities.
+
         entities = list()
         entity_chunks = list()
         for entity in doc.noun_chunks:
