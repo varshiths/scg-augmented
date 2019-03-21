@@ -21,12 +21,12 @@ from lib.get_union_boxes import UnionBoxesAndFeats
 from lib.fpn.proposal_assignments.rel_assignments import rel_assignments
 from lib.object_detector import ObjectDetector, gather_res, load_vgg
 from lib.pytorch_misc import transpose_packed_sequence_inds, to_onehot, arange, enumerate_by_image, diagonal_inds, Flattener
-from lib.sparse_targets import FrequencyBias
+from lib.sparse_targets import FrequencyBias, RCCorpusBias
 from lib.surgery import filter_dets
 from lib.word_vectors import obj_edge_vectors
 from lib.fpn.roi_align.functions.roi_align import RoIAlignFunction
 
-from lib.rel_model import RelModel
+from lib.rel_model import RelModel,LinearizedContext
 from lib.rel_model import _sort_by_score
 from lib.rel_model import MODES
 
@@ -37,7 +37,12 @@ class RelModelTC(RelModel):
     """
     RELATIONSHIPS WITH Teacher Student Framework
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, classes, rel_classes, mode='sgdet', num_gpus=1, use_vision=True, require_overlap_det=True,
+                 embed_dim=200, hidden_dim=256, pooling_dim=2048,
+                 nl_obj=1, nl_edge=2, use_resnet=False, order='confidence', thresh=0.01,
+                 use_proposals=False, pass_in_obj_feats_to_decoder=True,
+                 pass_in_obj_feats_to_edge=True, rec_dropout=0.0, use_tanh=True, limit_vision=True, 
+                 prior_weight=1.0, bias_src=None):
         """
         :param classes: Object classes
         :param rel_classes: Relationship classes. None if were not using rel mode
@@ -49,9 +54,89 @@ class RelModelTC(RelModel):
         :param hidden_dim: LSTM hidden size
         :param obj_dim:
         """
-        self.prior_weight = kwargs.pop("prior_weight", 1.0)
-        kwargs["use_bias"] = True
-        super(RelModelTC, self).__init__(*args, **kwargs)
+
+        super(RelModel, self).__init__()
+        self.classes = classes
+        self.rel_classes = rel_classes
+        self.num_gpus = num_gpus
+        assert mode in MODES
+        self.mode = mode
+
+        self.pooling_size = 7
+        self.embed_dim = embed_dim
+        self.hidden_dim = hidden_dim
+        self.obj_dim = 2048 if use_resnet else 4096
+        self.pooling_dim = pooling_dim
+
+        self.prior_weight = prior_weight
+        self.bias_src = bias_src
+
+        self.use_vision = use_vision
+        self.use_tanh = use_tanh
+        self.limit_vision=limit_vision
+        self.require_overlap = require_overlap_det and self.mode == 'sgdet'
+
+        self.detector = ObjectDetector(
+            classes=classes,
+            mode=('proposals' if use_proposals else 'refinerels') if mode == 'sgdet' else 'gtbox',
+            use_resnet=use_resnet,
+            thresh=thresh,
+            max_per_img=64,
+        )
+
+        self.context = LinearizedContext(self.classes, self.rel_classes, mode=self.mode,
+                                         embed_dim=self.embed_dim, hidden_dim=self.hidden_dim,
+                                         obj_dim=self.obj_dim,
+                                         nl_obj=nl_obj, nl_edge=nl_edge, dropout_rate=rec_dropout,
+                                         order=order,
+                                         pass_in_obj_feats_to_decoder=pass_in_obj_feats_to_decoder,
+                                         pass_in_obj_feats_to_edge=pass_in_obj_feats_to_edge)
+
+        # Image Feats (You'll have to disable if you want to turn off the features from here)
+        self.union_boxes = UnionBoxesAndFeats(pooling_size=self.pooling_size, stride=16,
+                                              dim=1024 if use_resnet else 512)
+
+        if use_resnet:
+            self.roi_fmap = nn.Sequential(
+                resnet_l4(relu_end=False),
+                nn.AvgPool2d(self.pooling_size),
+                Flattener(),
+            )
+        else:
+            roi_fmap = [
+                Flattener(),
+                load_vgg(use_dropout=False, use_relu=False, use_linear=pooling_dim == 4096, pretrained=False).classifier,
+            ]
+            if pooling_dim != 4096:
+                roi_fmap.append(nn.Linear(4096, pooling_dim))
+            self.roi_fmap = nn.Sequential(*roi_fmap)
+            self.roi_fmap_obj = load_vgg(pretrained=False).classifier
+
+        ###################################
+        self.post_lstm = nn.Linear(self.hidden_dim, self.pooling_dim * 2)
+
+        # Initialize to sqrt(1/2n) so that the outputs all have mean 0 and variance 1.
+        # (Half contribution comes from LSTM, half from embedding.
+
+        # In practice the pre-lstm stuff tends to have stdev 0.1 so I multiplied this by 10.
+        self.post_lstm.weight.data.normal_(0, 10.0 * math.sqrt(1.0 / self.hidden_dim))
+        self.post_lstm.bias.data.zero_()
+
+        if nl_edge == 0:
+            self.post_emb = nn.Embedding(self.num_classes, self.pooling_dim*2)
+            self.post_emb.weight.data.normal_(0, math.sqrt(1.0))
+
+        self.rel_compress = nn.Linear(self.pooling_dim, self.num_rels, bias=True)
+        self.rel_compress.weight = torch.nn.init.xavier_normal(self.rel_compress.weight, gain=1.0)
+
+        # import pdb; pdb.set_trace()
+
+        if self.bias_src == "vg":
+            self.freq_bias = FrequencyBias()
+        elif self.bias_src == "rc":
+            self.freq_bias = RCCorpusBias()
+        else:
+            raise Exception("No prior specified for a TC Model")
 
 
     def forward(self, x, im_sizes, image_offset,
@@ -133,7 +218,10 @@ class RelModelTC(RelModel):
             result.obj_preds[rel_inds[:, 1]],
             result.obj_preds[rel_inds[:, 2]],
         ), 1))
-        result.teacher_rel_soft_preds = F.softmax(teacher_rel_dists, dim=1)
+        # result.teacher_rel_soft_preds = F.softmax(teacher_rel_dists, dim=1)
+        _, result.teacher_rel_hard_preds = teacher_rel_dists.max(1)
+
+        # import pdb; pdb.set_trace()
 
         if self.training:
             return result

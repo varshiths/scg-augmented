@@ -59,3 +59,21 @@ PREDCLS for MOTIFNET-LEFTRIGHT
 | No Bias | 0.256 | 0.413 | 0.535 |
 | VG Bias | 0.149 | 0.286 | 0.423 |
 | RC Bias | 0.000 | 0.000 | 0.000 |
+
+
+
+Is it a good idea to have a soft loss for teacher student predictions?  
+No apparently. Also the performance has fallen a lot due to this (suspiciously only for leftright ordering though).  
+
+The hyperparameters also seem problematic. Need to verify that the problem is because of soft teacher loss and not hyperparams.  
+
+## 21th - 28th March
+
+Currently, have changed the soft preds of teacher to hard preds with the same hyperparams for config-size as that seemed to have worked.  
+
+Being trained:
+- vg-bias  
+- rc-bias  
+
+To be done later:
+`prior_weight` to be decreased to 0.2 for vg-bias to make teacher_dists range comparable with that of rel_dists and avoid an overpovering prior.  

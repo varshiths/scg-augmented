@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=2
 
 RPATH=$(pwd)
 # RPATH=$(dirname `pwd`)
@@ -23,26 +23,28 @@ export PYTHONPATH=$PYTHONPATH:$RPATH
 python models/train_rels_tc.py \
     -m sgdet \
     -model motifnet \
+    -order size \
     -b 8 \
     -p 100 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-leftright-sgdet-rc-0.2-0.4 \
+    -save_dir checkpoints/motifnet-size-sgdet-rc-1.0-0.5 \
     -bias_src rc \
-    -prior_weight 0.2 \
-    -distillation_weight 0.4
+    -prior_weight 1.0 \
+    -distillation_weight 0.5
 
 python models/train_rels_tc.py \
     -m sgdet \
     -model motifnet \
+    -order size \
     -b 8 \
     -p 100 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-leftright-sgdet-vg-0.2-0.4 \
+    -save_dir checkpoints/motifnet-size-sgdet-vg-1.0-0.5 \
     -bias_src vg \
-    -prior_weight 0.2 \
-    -distillation_weight 0.4
+    -prior_weight 1.0 \
+    -distillation_weight 0.5
 
 # python models/train_rels_tc.py \
 #     -m sgdet \

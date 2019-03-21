@@ -43,10 +43,10 @@ detector = RelModelTC(classes=train.ind_to_classes, rel_classes=train.ind_to_pre
                     pass_in_obj_feats_to_edge=conf.pass_in_obj_feats_to_edge,
                     pooling_dim=conf.pooling_dim,
                     rec_dropout=conf.rec_dropout,
-                    use_bias=conf.use_bias,
                     use_tanh=conf.use_tanh,
                     limit_vision=conf.limit_vision,
                     prior_weight=conf.prior_weight,
+                    bias_src=conf.bias_src,
                     )
 
 # Freeze the detector
@@ -92,6 +92,8 @@ def get_optim(lr):
 
 ckpt = torch.load(conf.ckpt)
 if conf.ckpt.split('-')[-2].split('/')[-1] == 'vgrel':
+    # import pdb; pdb.set_trace()
+
     print("Loading EVERYTHING")
     start_epoch = ckpt['epoch']
 
@@ -154,10 +156,13 @@ def train_batch(b, verbose=False):
     """
     result = detector[b]
 
+    # import pdb; pdb.set_trace()
+
     losses = {}
     losses['class_loss'] = F.cross_entropy(result.rm_obj_dists, result.rm_obj_labels)
-    losses['rel_loss'] = conf.distillation_weight * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1])
-    losses['teacher_loss'] = (1-conf.distillation_weight) * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
+    losses['rel_loss'] = (1-conf.distillation_weight) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1])
+    # losses['teacher_loss'] = conf.distillation_weight * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
+    losses['teacher_loss'] = conf.distillation_weight * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds)
 
     loss = sum(losses.values())
 

@@ -25,7 +25,7 @@ class FrequencyBias(nn.Module):
         fg_matrix[:, :, 0] = bg_matrix
         self.fg_matrix = fg_matrix
 
-    def build(self):
+    def build(self, eps=1e-3):
         fg_matrix = self.fg_matrix
         pred_dist = np.log(fg_matrix / fg_matrix.sum(2)[:, :, None] + eps)
 
@@ -58,7 +58,7 @@ class FrequencyBias(nn.Module):
         return baseline
 
 
-class CorpusBias(FrequencyBias):
+class RCCorpusBias(FrequencyBias):
     """
     The goal of this is to provide a simplified way of computing
     P(predicate | obj1, obj2, img) from a corpus.
@@ -66,10 +66,13 @@ class CorpusBias(FrequencyBias):
     fg_matrix init to load from saved pickle file
     """
     def __init__(self, corpus=None, eps=1e-3):
-        super(CorpusBias, self).__init__(eps)
+        super(RCCorpusBias, self).__init__(eps)
 
     def init_fg_matrix(self, corpus="region_captions"):
-        self.fg_matrix = np.load("data/captions_freq.npy")
+        try:
+            self.fg_matrix = np.load("data/captions_freq.npy") + 1
+        except Exception as e:
+            raise Exception("Please generate captions_freq.npy using scripts in misc and then proceed")
 
 if __name__ == '__main__':
     fqb = CorpusBias()

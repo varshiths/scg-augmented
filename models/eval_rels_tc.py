@@ -39,9 +39,10 @@ detector = RelModelTC(classes=train.ind_to_classes, rel_classes=train.ind_to_pre
                     pass_in_obj_feats_to_edge=conf.pass_in_obj_feats_to_edge,
                     pooling_dim=conf.pooling_dim,
                     rec_dropout=conf.rec_dropout,
-                    use_bias=conf.use_bias,
                     use_tanh=conf.use_tanh,
-                    limit_vision=conf.limit_vision
+                    limit_vision=conf.limit_vision,
+                    prior_weight=conf.prior_weight,
+                    bias_src=conf.bias_src,
                     )
 
 

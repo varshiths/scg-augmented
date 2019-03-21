@@ -51,19 +51,21 @@ python models/train_rels_tc.py \
     -p 100 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-leftright-sgdet-tc \
+    -save_dir checkpoints/motifnet-leftright-sgdet-rc \
+    -bias_src rc \
     -prior_weight 1.0 \
     -distillation_weight 0.5
 
-python models/train_rels.py \
-    -m sgdet \
-    -model motifnet \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-leftright-sgdet-nob
-    # -use_bias
+# python models/train_rels_tc.py \
+#     -m sgdet \
+#     -model motifnet \
+#     -b 8 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -ckpt checkpoints/vgdet/vg-24.tar \
+#     -save_dir checkpoints/motifnet-leftright-sgdet-tc \
+#     -prior_weight 1.0 \
+#     -distillation_weight 0.5
 
 # python models/train_rels.py \
 #     -m sgdet \
