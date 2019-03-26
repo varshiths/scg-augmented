@@ -7,53 +7,40 @@ RPATH=$(pwd)
 export PYTHONPATH=$PYTHONPATH:$RPATH
 # echo $PYTHONPATH
 
+python models/train_rels.py \
+    -m sgdet \
+    -model motifnet \
+    -order size \
+    -b 8 \
+    -p 100 \
+    -ngpu 1 \
+    -ckpt checkpoints/vgdet/vg-24.tar \
+    -save_dir checkpoints/motifnet-size-sgdet-nob
+    # -use_bias
+
 # # already trained
 # python models/train_rels_tc.py \
 #     -m sgdet \
 #     -model motifnet \
+#     -order size \
 #     -b 8 \
 #     -p 100 \
 #     -ngpu 1 \
 #     -ckpt checkpoints/vgdet/vg-24.tar \
-#     -save_dir checkpoints/motifnet-leftright-sgdet-vg \
-#     -bias_src vg \
+#     -save_dir checkpoints/motifnet-size-sgdet-rc-1.0-0.5 \
+#     -bias_src rc \
 #     -prior_weight 1.0 \
 #     -distillation_weight 0.5
-
-python models/train_rels_tc.py \
-    -m sgdet \
-    -model motifnet \
-    -order size \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-size-sgdet-rc-1.0-0.5 \
-    -bias_src rc \
-    -prior_weight 1.0 \
-    -distillation_weight 0.5
-
-python models/train_rels_tc.py \
-    -m sgdet \
-    -model motifnet \
-    -order size \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-size-sgdet-vg-1.0-0.5 \
-    -bias_src vg \
-    -prior_weight 1.0 \
-    -distillation_weight 0.5
 
 # python models/train_rels_tc.py \
 #     -m sgdet \
 #     -model motifnet \
+#     -order size \
 #     -b 8 \
 #     -p 100 \
 #     -ngpu 1 \
 #     -ckpt checkpoints/vgdet/vg-24.tar \
-#     -save_dir checkpoints/motifnet-leftright-sgdet-vg \
+#     -save_dir checkpoints/motifnet-size-sgdet-vg-1.0-0.5 \
 #     -bias_src vg \
 #     -prior_weight 1.0 \
-#     -distillation_weight 0.6
+#     -distillation_weight 0.5

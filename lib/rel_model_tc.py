@@ -136,7 +136,7 @@ class RelModelTC(RelModel):
         elif self.bias_src == "rc":
             self.freq_bias = RCCorpusBias()
         else:
-            raise Exception("No prior specified for a TC Model")
+            self.freq_bias = None
 
 
     def forward(self, x, im_sizes, image_offset,
@@ -214,12 +214,14 @@ class RelModelTC(RelModel):
             prod_rep = F.tanh(prod_rep)
 
         result.rel_dists = self.rel_compress(prod_rep)
-        teacher_rel_dists = result.rel_dists + self.prior_weight * self.freq_bias.index_with_labels(torch.stack((
-            result.obj_preds[rel_inds[:, 1]],
-            result.obj_preds[rel_inds[:, 2]],
-        ), 1))
-        # result.teacher_rel_soft_preds = F.softmax(teacher_rel_dists, dim=1)
-        _, result.teacher_rel_hard_preds = teacher_rel_dists.max(1)
+        if self.training:
+            assert self.freq_bias, "need to specify bias_src in training mode"
+            teacher_rel_dists = result.rel_dists + self.prior_weight * self.freq_bias.index_with_labels(torch.stack((
+                result.obj_preds[rel_inds[:, 1]],
+                result.obj_preds[rel_inds[:, 2]],
+            ), 1))
+            # result.teacher_rel_soft_preds = F.softmax(teacher_rel_dists, dim=1)
+            _, result.teacher_rel_hard_preds = teacher_rel_dists.max(1)
 
         # import pdb; pdb.set_trace()
 

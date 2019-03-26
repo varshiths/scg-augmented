@@ -74,6 +74,50 @@ Currently, have changed the soft preds of teacher to hard preds with the same hy
 Being trained:
 - vg-bias  
 - rc-bias  
+- no-bias (TODO)  
 
 To be done later:
 `prior_weight` to be decreased to 0.2 for vg-bias to make teacher_dists range comparable with that of rel_dists and avoid an overpovering prior.  
+
+Improved prior extraction by matching names of rels and extracted relations.
+- hid (changed)
+- rc (TODO)
+
+Descriptions Corpus:
+Is the descriptions corpus informative enough?
+- (Not seemingly)
+
+To check:
+Inspect the prior of VG beside RC and HID
+-
+
+SGDET for MOTIFNET-SIZE
+
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| No Bias | 0.000 | 0.000 | 0.000 | 
+| VG Bias | 0.209 | 0.265 | 0.297 | 
+| RC Bias | 0.111 | 0.150 | 0.178 | 
+| Published | 0.216 | 0.273 | 0.304 | 
+
+SGCLS for MOTIFNET-SIZE
+
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| No Bias | 0.000 | 0.000 | 0.000 | 
+| VG Bias | 0.225 | 0.282 | 0.310 | 
+| RC Bias | 0.129 | 0.176 | 0.202 | 
+| Published | 0.322 | 0.350 | 0.357 | 
+
+PREDCLS for MOTIFNET-SIZE
+
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| No Bias | 0.000 | 0.000 | 0.000 | 
+| VG Bias | 0.409 | 0.544 | 0.612 | 
+| RC Bias | 0.218 | 0.328 | 0.399 | 
+| Published | 0.580 | 0.649 | 0.668 | 
+
+To check:
+Is the training of a model mode dependent as well?
+- (Possibly)

@@ -201,7 +201,7 @@ class ModelConfig(object):
         parser.add_argument('-use_tanh', dest='use_tanh',  action='store_true')
         parser.add_argument('-limit_vision', dest='limit_vision',  action='store_true')
 
-        parser.add_argument('-bias_src', dest='bias_src', help="Source of the prior that is to be used", type=str, default="vg")
+        parser.add_argument('-bias_src', dest='bias_src', help="Source of the prior that is to be used", type=str, default=None)
         parser.add_argument('-prior_weight', dest='prior_weight', help='weight of prior to teacher', type=float, default=1.0)
         parser.add_argument('-distillation_weight', dest='distillation_weight', help='parameter controlling distillation extent from/to teacher', type=float, default=0.5)
         return parser
