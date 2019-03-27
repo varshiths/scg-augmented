@@ -83,13 +83,13 @@ Improved prior extraction by matching names of rels and extracted relations.
 - hid (changed)
 - rc (TODO)
 
-Descriptions Corpus:
-Is the descriptions corpus informative enough?
-- (Not seemingly)
+Descriptions Corpus:  
+Is the descriptions corpus informative enough?  
+- (Not seemingly)  
 
-To check:
-Inspect the prior of VG beside RC and HID
--
+To check:  
+Inspect the prior of VG beside RC and HID  
+- (possibly distribution is better represented due to exact relation labels)  
 
 SGDET for MOTIFNET-SIZE
 
