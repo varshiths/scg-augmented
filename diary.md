@@ -120,4 +120,4 @@ PREDCLS for MOTIFNET-SIZE
 
 To check:
 Is the training of a model mode dependent as well?
-- (Possibly)
+- Yes, it is. Model is to be trained and evaluated in each of the modes separately.  
