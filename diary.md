@@ -95,23 +95,23 @@ SGDET for MOTIFNET-SIZE
 
 | Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
-| No Bias | 0.000 | 0.000 | 0.000 | 
+| No Bias | 0.208 | 0.267 | 0.298 | 
 | VG Bias | 0.209 | 0.265 | 0.297 | 
 | RC Bias | 0.111 | 0.150 | 0.178 | 
 | Published | 0.216 | 0.273 | 0.304 | 
 
-SGCLS for MOTIFNET-SIZE
+<!-- SGCLS for MOTIFNET-SIZE
 
-| Model | R@20 | R@50 | R@100 |
+<!--| Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
 | No Bias | 0.000 | 0.000 | 0.000 | 
 | VG Bias | 0.225 | 0.282 | 0.310 | 
 | RC Bias | 0.129 | 0.176 | 0.202 | 
 | Published | 0.322 | 0.350 | 0.357 | 
 
-PREDCLS for MOTIFNET-SIZE
+<!--PREDCLS for MOTIFNET-SIZE
 
-| Model | R@20 | R@50 | R@100 |
+<!--| Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
 | No Bias | 0.000 | 0.000 | 0.000 | 
 | VG Bias | 0.409 | 0.544 | 0.612 | 
