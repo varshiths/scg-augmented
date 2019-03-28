@@ -102,21 +102,22 @@ SGDET for MOTIFNET-SIZE
 
 <!-- SGCLS for MOTIFNET-SIZE
 
-<!--| Model | R@20 | R@50 | R@100 |
+| Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
 | No Bias | 0.000 | 0.000 | 0.000 | 
 | VG Bias | 0.225 | 0.282 | 0.310 | 
 | RC Bias | 0.129 | 0.176 | 0.202 | 
 | Published | 0.322 | 0.350 | 0.357 | 
 
-<!--PREDCLS for MOTIFNET-SIZE
+PREDCLS for MOTIFNET-SIZE
 
-<!--| Model | R@20 | R@50 | R@100 |
+| Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
 | No Bias | 0.000 | 0.000 | 0.000 | 
 | VG Bias | 0.409 | 0.544 | 0.612 | 
 | RC Bias | 0.218 | 0.328 | 0.399 | 
 | Published | 0.580 | 0.649 | 0.668 | 
+-->
 
 To check:
 Is the training of a model mode dependent as well?
