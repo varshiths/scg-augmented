@@ -122,3 +122,23 @@ PREDCLS for MOTIFNET-SIZE
 To check:
 Is the training of a model mode dependent as well?
 - Yes, it is. Model is to be trained and evaluated in each of the modes separately.  
+
+## 29th March - 3rd April
+
+Shift to OpenIE parser?  
+- The sng_parser which was rule based relied on a closed set of verb phrases to form relation tuples which was obviously wrong  
+
+Used the OpenIE parser to extract tuples from the following corpora  
+- MSCOCO Image Captions
+- Hierarchical Image Descriptions
+
+Under training:  
+- motifnet-size with prior extracted from MSCOCO Captions (faulty)  
+- motifnet-size with prior extracted from HID (TODO)  
+
+TODO:
+- replace faulty MSCOCO with bug free prior  
+
+Shift to PREDCLS?  
+- Probably should. Training SGDET takes considerably longer and the results are not indicative of the prior performance?  
+

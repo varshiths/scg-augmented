@@ -74,6 +74,23 @@ class RCCorpusBias(FrequencyBias):
         except Exception as e:
             raise Exception("Please generate captions_freq.npy using scripts in misc and then proceed")
 
+class COCOCorpusBias(FrequencyBias):
+    """
+    The goal of this is to provide a simplified way of computing
+    P(predicate | obj1, obj2, img) from a corpus.
+    This class inherits from the FrequencyBias class and alters the 
+    fg_matrix init to load from saved pickle file
+    """
+    def __init__(self, corpus=None, eps=1e-3):
+        super(COCOCorpusBias, self).__init__(eps)
+
+    def init_fg_matrix(self, corpus="mscoco_captions"):
+        try:
+            self.fg_matrix = np.load("data/mscoco_captions_freq.npy") + 1
+        except Exception as e:
+            raise Exception("Please generate mscoco_captions_freq.npy using scripts in misc and then proceed")
+
+
 if __name__ == '__main__':
     fqb = CorpusBias()
     import pdb; pdb.set_trace()

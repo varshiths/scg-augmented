@@ -7,18 +7,18 @@ RPATH=$(pwd)
 export PYTHONPATH=$PYTHONPATH:$RPATH
 # echo $PYTHONPATH
 
-python models/train_rels.py \
-    -m sgdet \
-    -model motifnet \
-    -order size \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-size-sgdet-nob
-    # -use_bias
-
 # # already trained
+# python models/train_rels.py \
+#     -m sgdet \
+#     -model motifnet \
+#     -order size \
+#     -b 8 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -ckpt checkpoints/vgdet/vg-24.tar \
+#     -save_dir checkpoints/motifnet-size-sgdet-nob
+#     # -use_bias
+
 # python models/train_rels_tc.py \
 #     -m sgdet \
 #     -model motifnet \
@@ -44,3 +44,16 @@ python models/train_rels.py \
 #     -bias_src vg \
 #     -prior_weight 1.0 \
 #     -distillation_weight 0.5
+
+python models/train_rels_tc.py \
+    -m sgdet \
+    -model motifnet \
+    -order size \
+    -b 8 \
+    -p 100 \
+    -ngpu 1 \
+    -ckpt checkpoints/vgdet/vg-24.tar \
+    -save_dir checkpoints/motifnet-size-sgdet-coco-1.0-0.5 \
+    -bias_src coco \
+    -prior_weight 1.0 \
+    -distillation_weight 0.5
