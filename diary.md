@@ -133,12 +133,26 @@ Used the OpenIE parser to extract tuples from the following corpora
 - Hierarchical Image Descriptions
 
 Under training:  
-- motifnet-size with prior extracted from MSCOCO Captions (faulty)  
+- motifnet-size with prior extracted from MSCOCO Captions (TODO: bugfree)  
 - motifnet-size with prior extracted from HID (TODO)  
-
-TODO:
-- replace faulty MSCOCO with bug free prior  
 
 Shift to PREDCLS?  
 - Probably should. Training SGDET takes considerably longer and the results are not indicative of the prior performance?  
 
+SGDET for MOTIFNET-SIZE  
+
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| No Bias | 0.208 | 0.267 | 0.298 | 
+| VG Bias (Prior) | 0.209 | 0.265 | 0.297 | 
+| RC Bias (SGP) | 0.111 | 0.150 | 0.178 | 
+| Coco Bias (OIE) | 0.081 | 0.128 | 0.163 | 
+| Published | 0.216 | 0.273 | 0.304 | 
+
+OIE: OpenIE based tuple extraction  
+SGP: Spacy Scene Graph Parser at github.com/sng_parser  
+
+Insights:  
+- Bad hyperparameter tuning  
+- Shift to PREDCLS to perform quick experimentation  
+- Prior for negative cases?  

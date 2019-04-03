@@ -147,8 +147,8 @@ python models/eval_rels_tc.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-sgdet-coco-1.0-0.5/vgrel-11.tar \
-    -cache cache/sgdet_motifnet-size-sgdet-coco-1.0-0.5_vgrel-11
+    -ckpt checkpoints/motifnet-size-sgdet-coco-1.0-0.5/vgrel-12.tar \
+    -cache cache/sgdet_motifnet-size-sgdet-coco-1.0-0.5_vgrel-12
 
 # echo "***************************"
 # echo "***************************"
