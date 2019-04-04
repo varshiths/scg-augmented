@@ -90,6 +90,22 @@ class COCOCorpusBias(FrequencyBias):
         except Exception as e:
             raise Exception("Please generate mscoco_captions_freq.npy using scripts in misc and then proceed")
 
+class HIDCorpusBias(FrequencyBias):
+    """
+    The goal of this is to provide a simplified way of computing
+    P(predicate | obj1, obj2, img) from a corpus.
+    This class inherits from the FrequencyBias class and alters the 
+    fg_matrix init to load from saved pickle file
+    """
+    def __init__(self, corpus=None, eps=1e-3):
+        super(HIDCorpusBias, self).__init__(eps)
+
+    def init_fg_matrix(self, corpus="HIDCorpusBias"):
+        try:
+            self.fg_matrix = np.load("data/descriptions_freq.npy") + 1
+        except Exception as e:
+            raise Exception("Please generate descriptions_freq.npy using scripts in misc and then proceed")
+
 
 if __name__ == '__main__':
     fqb = CorpusBias()

@@ -21,7 +21,7 @@ from lib.get_union_boxes import UnionBoxesAndFeats
 from lib.fpn.proposal_assignments.rel_assignments import rel_assignments
 from lib.object_detector import ObjectDetector, gather_res, load_vgg
 from lib.pytorch_misc import transpose_packed_sequence_inds, to_onehot, arange, enumerate_by_image, diagonal_inds, Flattener
-from lib.sparse_targets import FrequencyBias, RCCorpusBias, COCOCorpusBias
+from lib.sparse_targets import FrequencyBias, RCCorpusBias, COCOCorpusBias, HIDCorpusBias
 from lib.surgery import filter_dets
 from lib.word_vectors import obj_edge_vectors
 from lib.fpn.roi_align.functions.roi_align import RoIAlignFunction
@@ -137,6 +137,8 @@ class RelModelTC(RelModel):
             self.freq_bias = RCCorpusBias()
         elif self.bias_src == "coco":
             self.freq_bias = COCOCorpusBias()
+        elif self.bias_src == "hid":
+            self.freq_bias = HIDCorpusBias()
         else:
             self.freq_bias = None
 

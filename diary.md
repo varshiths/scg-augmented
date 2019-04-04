@@ -100,25 +100,6 @@ SGDET for MOTIFNET-SIZE
 | RC Bias | 0.111 | 0.150 | 0.178 | 
 | Published | 0.216 | 0.273 | 0.304 | 
 
-<!-- SGCLS for MOTIFNET-SIZE
-
-| Model | R@20 | R@50 | R@100 |
-| ----- | ---- | ---- | ----- |
-| No Bias | 0.000 | 0.000 | 0.000 | 
-| VG Bias | 0.225 | 0.282 | 0.310 | 
-| RC Bias | 0.129 | 0.176 | 0.202 | 
-| Published | 0.322 | 0.350 | 0.357 | 
-
-PREDCLS for MOTIFNET-SIZE
-
-| Model | R@20 | R@50 | R@100 |
-| ----- | ---- | ---- | ----- |
-| No Bias | 0.000 | 0.000 | 0.000 | 
-| VG Bias | 0.409 | 0.544 | 0.612 | 
-| RC Bias | 0.218 | 0.328 | 0.399 | 
-| Published | 0.580 | 0.649 | 0.668 | 
--->
-
 To check:
 Is the training of a model mode dependent as well?
 - Yes, it is. Model is to be trained and evaluated in each of the modes separately.  
@@ -133,8 +114,8 @@ Used the OpenIE parser to extract tuples from the following corpora
 - Hierarchical Image Descriptions
 
 Under training:  
-- motifnet-size with prior extracted from MSCOCO Captions (TODO: bugfree)  
-- motifnet-size with prior extracted from HID (TODO)  
+- motifnet-size with prior extracted from MSCOCO Captions (TODO bugfree: ?)  
+- motifnet-size with prior extracted from HID (TODO: skip)  
 
 Shift to PREDCLS?  
 - Probably should. Training SGDET takes considerably longer and the results are not indicative of the prior performance?  
@@ -146,7 +127,7 @@ SGDET for MOTIFNET-SIZE
 | No Bias | 0.208 | 0.267 | 0.298 | 
 | VG Bias (Prior) | 0.209 | 0.265 | 0.297 | 
 | RC Bias (SGP) | 0.111 | 0.150 | 0.178 | 
-| Coco Bias (OIE) | 0.081 | 0.128 | 0.163 | 
+| Coco Bias (OIE) (to update with corr num.) | 0.081 | 0.128 | 0.163 | 
 | Published | 0.216 | 0.273 | 0.304 | 
 
 OIE: OpenIE based tuple extraction  
@@ -156,3 +137,27 @@ Insights:
 - Bad hyperparameter tuning  
 - Shift to PREDCLS to perform quick experimentation  
 - Prior for negative cases?  
+
+## 4th - 10th April
+
+Under training:  
+- motifnet-size with prior extracted from MSCOCO Captions
+- motifnet-size-predcls nob, vgp, todo: coco and hid
+
+To establish:
+- lk distillation works well with what params of vgp
+- extend/repeat with other params
+
+PREDCLS for MOTIFNET-SIZE  
+
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| No Bias | 0.000 | 0.000 | 0.000 |
+| VG Bias (Prior) | 0.000 | 0.000 | 0.000 |
+| Coco Bias (OIE) | 0.000 | 0.000 | 0.000 |
+| HID Bias (OIE) | 0.000 | 0.000 | 0.000 |
+| Published | 0.580 | 0.649 | 0.668 |
+
+TODO:
+- Monitor the nnumber of violations during training
+- Inspect effect of prior
