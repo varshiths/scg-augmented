@@ -127,7 +127,7 @@ SGDET for MOTIFNET-SIZE
 | No Bias | 0.208 | 0.267 | 0.298 | 
 | VG Bias (Prior) | 0.209 | 0.265 | 0.297 | 
 | RC Bias (SGP) | 0.111 | 0.150 | 0.178 | 
-| Coco Bias (OIE) (to update with corr num.) | 0.081 | 0.128 | 0.163 | 
+| Coco Bias (OIE) | 0.091 | 0.127 | 0.156 | 
 | Published | 0.216 | 0.273 | 0.304 | 
 
 OIE: OpenIE based tuple extraction  
@@ -141,7 +141,7 @@ Insights:
 ## 4th - 10th April
 
 Under training:  
-- motifnet-size with prior extracted from MSCOCO Captions
+- ~~motifnet-size-sgdet with prior extracted from MSCOCO Captions~~
 - motifnet-size-predcls nob, vgp, todo: coco and hid
 
 To establish:
