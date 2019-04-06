@@ -152,7 +152,7 @@ PREDCLS for MOTIFNET-SIZE
 
 | Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
-| No Bias | 0.000 | 0.000 | 0.000 |
+| No Bias | 0.582 | 0.649 | 0.668 |
 | VG Bias (Prior) | 0.000 | 0.000 | 0.000 |
 | Coco Bias (OIE) | 0.000 | 0.000 | 0.000 |
 | HID Bias (OIE) | 0.000 | 0.000 | 0.000 |
