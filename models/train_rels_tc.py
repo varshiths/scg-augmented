@@ -116,8 +116,16 @@ else:
 
 detector.cuda()
 
-
+cdw = 0.0
 def train_epoch(epoch_num):
+
+    global cdw
+    # assuming training lasts for roughly 15 epochs
+    if epoch_num < 0:
+        cdw = 0.0
+    else:
+        cdw = conf.distillation_weight
+
     detector.train()
     tr = []
     start = time.time()
@@ -154,15 +162,14 @@ def train_batch(b, verbose=False):
           :param gt_classes: [num_gt, 2] gt boxes where each one is (img_id, class)
     :return:
     """
+    global cdw
     result = detector[b]
-
-    # import pdb; pdb.set_trace()
 
     losses = {}
     losses['class_loss'] = F.cross_entropy(result.rm_obj_dists, result.rm_obj_labels)
-    losses['rel_loss'] = (1-conf.distillation_weight) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1])
+    losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1])
     # losses['teacher_loss'] = conf.distillation_weight * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
-    losses['teacher_loss'] = conf.distillation_weight * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds)
+    losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds)
 
     loss = sum(losses.values())
 

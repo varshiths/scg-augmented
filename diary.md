@@ -148,16 +148,30 @@ To establish:
 - lk distillation works well with what params of vgp
 - extend/repeat with other params
 
+TODO:
+- Monitor the nnumber of violations during training
+- Inspect effect of prior
+
 PREDCLS for MOTIFNET-SIZE  
 
 | Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
 | No Bias | 0.582 | 0.649 | 0.668 |
-| VG Bias (Prior) | 0.000 | 0.000 | 0.000 |
+| VG Bias (Prior) | 0.568 | 0.637 | 0.656 |
 | Coco Bias (OIE) | 0.000 | 0.000 | 0.000 |
 | HID Bias (OIE) | 0.000 | 0.000 | 0.000 |
 | Published | 0.580 | 0.649 | 0.668 |
 
-TODO:
-- Monitor the nnumber of violations during training
-- Inspect effect of prior
+
+HPARAM EXPLR - VAL - PREDCLS for MOTIFNET-SIZE  
+
+| Coco Bias | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| 1.0, 0.5 | 0.000 | 0.000 | 0.000 |
+
+| HID Bias | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| 1.0, 0.5 | 0.000 | 0.000 | 0.000 |
+
+To avoid bad predictions in the beginning, only the student network is trained for the first five epochs.  
+This is simulated by starting training from the nob checkpoint at epoch 5.

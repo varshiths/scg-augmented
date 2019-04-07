@@ -220,14 +220,36 @@ class RelModelTC(RelModel):
         result.rel_dists = self.rel_compress(prod_rep)
         if self.training:
             assert self.freq_bias, "need to specify bias_src in training mode"
-            teacher_rel_dists = result.rel_dists + self.prior_weight * self.freq_bias.index_with_labels(torch.stack((
+            prior_indexed = self.freq_bias.index_with_labels(torch.stack((
                 result.obj_preds[rel_inds[:, 1]],
                 result.obj_preds[rel_inds[:, 2]],
             ), 1))
+            teacher_rel_dists = result.rel_dists + self.prior_weight * prior_indexed
             # result.teacher_rel_soft_preds = F.softmax(teacher_rel_dists, dim=1)
             _, result.teacher_rel_hard_preds = teacher_rel_dists.max(1)
 
-        # import pdb; pdb.set_trace()
+            # spreds = result.rel_dists.max(1)[1]
+            # tpreds = teacher_rel_dists.max(1)[1]
+            # gpreds = result.rel_labels[:, -1]
+            # print("Agreements T&S: {:+.3f}".format(
+            #         (torch.sum(torch.eq(
+            #             spreds,
+            #             tpreds
+            #         ).type(torch.DoubleTensor)).data).cpu().numpy()[0] / gpreds.size()[0]
+            #     ), end=" ")
+            # print("T&G: {:+.3f}".format(
+            #         (torch.sum(torch.eq(
+            #             gpreds,
+            #             tpreds
+            #         ).type(torch.DoubleTensor)).data).cpu().numpy()[0] / gpreds.size()[0]
+            #     ), end=" ")
+            # print("S&G: {:+.3f}".format(
+            #         (torch.sum(torch.eq(
+            #             gpreds,
+            #             spreds
+            #         ).type(torch.DoubleTensor)).data).cpu().numpy()[0] / gpreds.size()[0]
+            #     ), end=" ")
+            # print("#: {}".format(gpreds.size()[0]))
 
         if self.training:
             return result
