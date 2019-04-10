@@ -162,7 +162,6 @@ PREDCLS for MOTIFNET-SIZE
 | HID Bias (OIE) | 0.000 | 0.000 | 0.000 |
 | Published | 0.580 | 0.649 | 0.668 |
 
-
 HPARAM EXPLR - VAL - PREDCLS for MOTIFNET-SIZE  
 
 | Coco Bias | R@20 | R@50 | R@100 |
@@ -178,3 +177,16 @@ HPARAM EXPLR - VAL - PREDCLS for MOTIFNET-SIZE
 
 To avoid bad predictions in the beginning, only the student network is trained for the first five epochs.  
 This is simulated by starting training from the nob checkpoint at epoch 5.
+
+Insights:
+- Monitored the softmax values during training
+- Problem still persists - check hyper params exploration on validation set
+- The number of preds \ bg pred correctly is better by teacher
+- Teacher almost always misses “bg” - student is better
+- The pressure for student to match “bg” is hurting the scores of the other relations
+- The VG Bias (Prior) accounts for overlaps, i.e., if boxes overlap, then the relation is "bg"
+
+Approaches:
+- Figure out if "bg" class can be skipped from the teaching process
+- Manually construct bg from language (difficult)
+- Decrease the probability of bg class globally
