@@ -7,84 +7,53 @@ RPATH=$(pwd)
 export PYTHONPATH=$PYTHONPATH:$RPATH
 # echo $PYTHONPATH
 
-python models/eval_rels_tc.py \
-    -m sgdet \
-    -model motifnet \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -test \
-    -ckpt checkpoints/motifnet-leftright-sgdet-tc/vgrel-9.tar \
-    -cache cache/sgdet_motifnet-sgdet-tc_vgrel-9
+# evaluation script for hyper param search
 
-echo "***************************"
-echo "***************************"
+# python models/eval_rels_tc.py \
+#     -m predcls \
+#     -model motifnet \
+#     -b 16 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -ckpt checkpoints/motifnet-size-predcls-nob/vgrel-16.tar \
+#     -cache cache/predcls_motifnet-size-predcls-nob_vgrel-16_eval
+#     # -test \
 
-python models/eval_rels.py \
-    -m sgdet \
-    -model motifnet \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -test \
-    -ckpt checkpoints/motifnet-leftright-sgdet-nob/vgrel-9.tar \
-    -cache cache/sgdet_motifnet-sgdet-nob_vgrel-9
-    # -use_bias
+# python models/eval_rels_tc.py \
+#     -m predcls \
+#     -model motifnet \
+#     -b 16 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -test \
+#     -ckpt checkpoints/motifnet-size-predcls-coco-0.8-0.3/vgrel-4.tar \
+#     -cache cache/predcls_motifnet-size-predcls-coco-0.8-0.3_vgrel-4
 
-echo "***************************"
-echo "***************************"
-echo "***************************"
-echo "***************************"
+# python models/eval_rels_tc.py \
+#     -m predcls \
+#     -model motifnet \
+#     -b 16 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -test \
+#     -ckpt checkpoints/motifnet-size-predcls-coco-1.0-0.5/vgrel-4.tar \
+#     -cache cache/predcls_motifnet-size-predcls-coco-1.0-0.5_vgrel-4
 
-python models/eval_rels_tc.py \
-    -m sgcls \
-    -model motifnet \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -test \
-    -ckpt checkpoints/motifnet-leftright-sgdet-tc/vgrel-9.tar \
-    -cache cache/sgcls_motifnet-sgdet-tc_vgrel-9
-
-echo "***************************"
-echo "***************************"
-
-python models/eval_rels.py \
-    -m sgcls \
-    -model motifnet \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -test \
-    -ckpt checkpoints/motifnet-leftright-sgdet-nob/vgrel-9.tar \
-    -cache cache/sgcls_motifnet-sgdet-nob_vgrel-9
-    # -use_bias
-
-echo "***************************"
-echo "***************************"
-echo "***************************"
-echo "***************************"
+# python models/eval_rels_tc.py \
+#     -m predcls \
+#     -model motifnet \
+#     -b 16 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -ckpt checkpoints/motifnet-size-predcls-coco-0.8-0.5/vgrel-20.tar \
+#     -cache cache/predcls_motifnet-size-predcls-coco-0.8-0.5_vgrel-20_eval
+#     # -test \
 
 python models/eval_rels_tc.py \
     -m predcls \
     -model motifnet \
-    -b 8 \
+    -b 16 \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-leftright-sgdet-tc/vgrel-9.tar \
-    -cache cache/predcls_motifnet-sgdet-tc_vgrel-9
-
-echo "***************************"
-echo "***************************"
-
-python models/eval_rels.py \
-    -m predcls \
-    -model motifnet \
-    -b 8 \
-    -p 100 \
-    -ngpu 1 \
-    -test \
-    -ckpt checkpoints/motifnet-leftright-sgdet-nob/vgrel-9.tar \
-    -cache cache/predcls_motifnet-sgdet-nob_vgrel-9
-    # -use_bias
+    -ckpt checkpoints/motifnet-size-predcls-coco-1.0-0.5/vgrel-4.tar

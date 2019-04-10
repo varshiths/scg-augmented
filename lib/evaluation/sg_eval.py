@@ -102,6 +102,7 @@ def evaluate_from_dict(gt_entry, pred_entry, mode, result_dict, multiple_preds=F
         pred_rels = np.column_stack((pred_rel_inds[score_inds[:,0]], score_inds[:,1]+1))
         predicate_scores = rel_scores[score_inds[:,0], score_inds[:,1]+1]
     else:
+        # all background preds are ignored
         pred_rels = np.column_stack((pred_rel_inds, 1+rel_scores[:,1:].argmax(1)))
         predicate_scores = rel_scores[:,1:].max(1)
 

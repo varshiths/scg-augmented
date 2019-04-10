@@ -114,7 +114,7 @@ Used the OpenIE parser to extract tuples from the following corpora
 - Hierarchical Image Descriptions
 
 Under training:  
-- motifnet-size with prior extracted from MSCOCO Captions (TODO bugfree: ?)  
+- motifnet-size with prior extracted from MSCOCO Captions (TODO bugfree: done)  
 - motifnet-size with prior extracted from HID (TODO: skip)  
 
 Shift to PREDCLS?  
@@ -158,7 +158,7 @@ PREDCLS for MOTIFNET-SIZE
 | ----- | ---- | ---- | ----- |
 | No Bias | 0.582 | 0.649 | 0.668 |
 | VG Bias (Prior) | 0.568 | 0.637 | 0.656 |
-| Coco Bias (OIE) | 0.000 | 0.000 | 0.000 |
+| Coco Bias (OIE) | 0.280 | 0.372 | 0.434 |
 | HID Bias (OIE) | 0.000 | 0.000 | 0.000 |
 | Published | 0.580 | 0.649 | 0.668 |
 
@@ -167,7 +167,10 @@ HPARAM EXPLR - VAL - PREDCLS for MOTIFNET-SIZE
 
 | Coco Bias | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
-| 1.0, 0.5 | 0.000 | 0.000 | 0.000 |
+| 1.0, 0.5\* | 0.234 | 0.305 | 0.360 |
+| 0.8, 0.3 | 0.366 | 0.440 | 0.481 |
+| 0.8, 0.5 | 0.282 | 0.356 | 0.404 |
+| 0.0, 0.0 | 0.606 | 0.659 | 0.675 |
 
 | HID Bias | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |

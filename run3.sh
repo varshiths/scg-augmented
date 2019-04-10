@@ -31,18 +31,31 @@ export PYTHONPATH=$PYTHONPATH:$RPATH
 #     -prior_weight 1.0 \
 #     -distillation_weight 0.5
 
-python models/train_rels_tc.py \
-    -m predcls \
-    -model motifnet \
-    -order size \
-    -b 16 \
-    -p 100 \
-    -ngpu 1 \
-    -ckpt checkpoints/motifnet-size-predcls-nob/vgrel-5.tar \
-    -bias_src coco \
-    -save_dir checkpoints/motifnet-size-predcls-coco-0.8-0.3 \
-    -prior_weight 0.8 \
-    -distillation_weight 0.3
+# python models/train_rels_tc.py \
+#     -m predcls \
+#     -model motifnet \
+#     -order size \
+#     -b 16 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -ckpt checkpoints/motifnet-size-predcls-nob/vgrel-5.tar \
+#     -bias_src coco \
+#     -save_dir checkpoints/motifnet-size-predcls-coco-0.8-0.3 \
+#     -prior_weight 0.8 \
+#     -distillation_weight 0.3
+
+# python models/train_rels_tc.py \
+#     -m predcls \
+#     -model motifnet \
+#     -order size \
+#     -b 16 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -ckpt checkpoints/motifnet-size-predcls-nob/vgrel-5.tar \
+#     -bias_src coco \
+#     -save_dir checkpoints/motifnet-size-predcls-coco-1.0-0.5 \
+#     -prior_weight 1.0 \
+#     -distillation_weight 0.5
 
 python models/train_rels_tc.py \
     -m predcls \
@@ -51,11 +64,11 @@ python models/train_rels_tc.py \
     -b 16 \
     -p 100 \
     -ngpu 1 \
-    -ckpt checkpoints/motifnet-size-predcls-nob/vgrel-5.tar \
-    -bias_src coco \
-    -save_dir checkpoints/motifnet-size-predcls-coco-1.0-0.5 \
+    -ckpt checkpoints/motifnet-size-predcls-vg-1.0-0.5/vgrel-10.tar \
+    -bias_src vg \
+    -save_dir checkpoints/motifnet-size-predcls-coco-exp \
     -prior_weight 1.0 \
-    -distillation_weight 0.5
+    -distillation_weight 0.3
 
 # python models/train_rels_tc.py \
 #     -m predcls \
