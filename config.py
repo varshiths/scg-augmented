@@ -106,6 +106,8 @@ class ModelConfig(object):
         self.distillation_weight = None
         self.prior_weight = None
 
+        self.icr = False
+
         self.parser = self.setup_parser()
         self.args = vars(self.parser.parse_args())
 
@@ -204,4 +206,7 @@ class ModelConfig(object):
         parser.add_argument('-bias_src', dest='bias_src', help="Source of the prior that is to be used", type=str, default=None)
         parser.add_argument('-prior_weight', dest='prior_weight', help='weight of prior to teacher', type=float, default=1.0)
         parser.add_argument('-distillation_weight', dest='distillation_weight', help='parameter controlling distillation extent from/to teacher', type=float, default=0.5)
+
+        parser.add_argument('-icr', dest='icr', help='to weight the teacher student loss with class ratios', type=bool, default=False)
+
         return parser

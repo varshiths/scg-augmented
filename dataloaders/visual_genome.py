@@ -20,6 +20,7 @@ from dataloaders.image_transforms import SquarePad, Grayscale, Brightness, Sharp
 from collections import defaultdict
 from pycocotools.coco import COCO
 
+import pickle
 
 class VG(Dataset):
     def __init__(self, mode, roidb_file=VG_SGG_FN, dict_file=VG_SGG_DICT_FN,
@@ -245,25 +246,36 @@ def load_image_filenames(image_file, image_dir=VG_IMAGES):
     :param image_dir: directory where the VisualGenome images are located
     :return: List of filenames corresponding to the good images
     """
-    with open(image_file, 'r') as f:
-        im_data = json.load(f)
+    TEMPFNAME = "data/visgenome/fnames.txt"
 
-    # import pdb; pdb.set_trace()
+    if not os.path.exists(TEMPFNAME):
+        print("Loading filenames")
+        with open(image_file, 'r') as f:
+            im_data = json.load(f)
 
-    corrupted_ims = ['1592.jpg', '1722.jpg', '4616.jpg', '4617.jpg']
-    fns = []
-    for i, img in enumerate(tqdm(im_data)):
-        basename = '{}.jpg'.format(img['image_id'])
-        if basename in corrupted_ims:
-            continue
+        corrupted_ims = ['1592.jpg', '1722.jpg', '4616.jpg', '4617.jpg']
+        fns = []
+        for i, img in enumerate(tqdm(im_data)):
+            basename = '{}.jpg'.format(img['image_id'])
+            if basename in corrupted_ims:
+                continue
 
-        filename = os.path.join(image_dir, basename)
-        filename_2 = os.path.join(image_dir + "_2", basename)
-        if os.path.exists(filename):
-            fns.append(filename)
-        elif os.path.exists(filename_2):
-            fns.append(filename_2)
-    assert len(fns) == 108073
+            filename = os.path.join(image_dir, basename)
+            filename_2 = os.path.join(image_dir + "_2", basename)
+            if os.path.exists(filename):
+                fns.append(filename)
+            elif os.path.exists(filename_2):
+                fns.append(filename_2)
+        assert len(fns) == 108073
+
+        print("Writing into:", TEMPFNAME)
+        with open(TEMPFNAME, "wb+") as f:
+            pickle.dump(fns, f)
+    else:
+        print("Loading filenames from:", TEMPFNAME)
+        with open(TEMPFNAME, "rb") as f:
+            fns = pickle.load(f)
+
     return fns
 
 

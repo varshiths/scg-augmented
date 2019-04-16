@@ -190,3 +190,22 @@ Approaches:
 - Figure out if "bg" class can be skipped from the teaching process
 - Manually construct bg from language (difficult)
 - Decrease the probability of bg class globally
+
+## 11th - 17th April
+
+Because the frequency of "bg" is high, the model requires you to be good with the other classes too.  
+
+Not just about training with less weight for "bg", it is also ensuring the rest of the confidence values are also in order.
+
+- Use ranking losses?  
+- No clue how the model with the good prior actually does this.
+
+Attempt with class weighting for teacher-student loss term:  
+
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| Coco Bias | 0.280 | 0.372 | 0.434 |
+| Coco Bias + ICR | 0.198 | 0.275 | 0.330 |
+| HID Bias | 0.000 | 0.000 | 0.000 |
+| HID Bias + ICR | 0.408 | 0.500 | 0.549 |
+| Published | 0.580 | 0.649 | 0.668 |

@@ -129,8 +129,6 @@ class RelModelTC(RelModel):
         self.rel_compress = nn.Linear(self.pooling_dim, self.num_rels, bias=True)
         self.rel_compress.weight = torch.nn.init.xavier_normal(self.rel_compress.weight, gain=1.0)
 
-        # import pdb; pdb.set_trace()
-
         if self.bias_src == "vg":
             self.freq_bias = FrequencyBias()
         elif self.bias_src == "rc":
@@ -229,37 +227,44 @@ class RelModelTC(RelModel):
             # result.teacher_rel_soft_preds = F.softmax(teacher_rel_dists, dim=1)
             _, result.teacher_rel_hard_preds = teacher_rel_dists.max(1)
 
-            gpreds = result.rel_labels[:, -1]
-            spreds = result.rel_dists.max(1)[1]
-            tpreds = teacher_rel_dists.max(1)[1]
+            # # gpreds = result.rel_labels[:, -1]
+            # # spreds = result.rel_dists.max(1)[1]
+            # # tpreds = teacher_rel_dists.max(1)[1]
+            # gpreds = result.rel_labels[:, -1]
+            # spreds = result.rel_dists[:, 1:].max(1)[1]+1
+            # tpreds = teacher_rel_dists[:, 1:].max(1)[1]+1
 
-            # mask = torch.eq(gpreds, 0).type(torch.DoubleTensor)
-            mask = 1-torch.eq(gpreds, 0).type(torch.DoubleTensor)
-            # mask  = torch.ones_like(gpreds).type(torch.DoubleTensor)
-            nrels = torch.sum(mask).data.cpu().numpy()[0]
+            # # mask = torch.eq(gpreds, 0).type(torch.DoubleTensor)
+            # mask = 1-torch.eq(gpreds, 0).type(torch.DoubleTensor)
+            # # mask  = torch.ones_like(gpreds).type(torch.DoubleTensor)
+            # indices = mask.data.cpu().numpy() == 1
+            # nrels = torch.sum(mask).data.cpu().numpy()[0]
+            # def fn(a, b, mask):
+            #     return torch.sum(torch.eq(a, b).type(torch.DoubleTensor)*mask).data.cpu().numpy()[0]
 
-            def fn(a, b, mask):
-                return torch.sum(torch.eq(a, b).type(torch.DoubleTensor)*mask).data.cpu().numpy()[0]
+            # tds = tpreds.data.cpu().numpy()[indices][:20]
+            # sds = spreds.data.cpu().numpy()[indices][:20]
+            # gds = gpreds.data.cpu().numpy()[indices][:20]
+            # print("Teacher/Student/Gold Preds")
+            # print(np.transpose(np.stack([tds, sds, gds], axis=1)))
 
-            # import pdb; pdb.set_trace()
+            # # print("Zero Preds: T: {} S: {} G: {}".format(
+            # #         torch.sum(torch.eq(tpreds, 0).type(torch.DoubleTensor)).data.cpu().numpy()[0],
+            # #         torch.sum(torch.eq(spreds, 0).type(torch.DoubleTensor)).data.cpu().numpy()[0],
+            # #         torch.sum(torch.eq(gpreds, 0).type(torch.DoubleTensor)).data.cpu().numpy()[0],
+            # #     ))
 
-            tds = tpreds.data.cpu().numpy()[:20]
-            gds = gpreds.data.cpu().numpy()[:20]
-
-            print("Teacher/Gold Preds")
-            print(np.transpose(np.stack([tds, gds], axis=1)))
-
-            print("Agreements T&S: {:+.3f}".format(
-                    fn(spreds, tpreds, mask) / nrels
-                ), end=" ")
-            print("T&G: {:+.3f}".format(
-                    fn(gpreds, tpreds, mask) / nrels
-                ), end=" ")
-            print("S&G: {:+.3f}".format(
-                    fn(gpreds, spreds, mask) / nrels
-                ), end=" ")
-            print("#: {}".format(nrels), end=" ")
-            print("T#: {}".format(gpreds.size()[0]))
+            # print("Agreements T&S: {:+.3f}".format(
+            #         fn(spreds, tpreds, mask) / nrels
+            #     ), end=" ")
+            # print("T&G: {:+.3f}".format(
+            #         fn(gpreds, tpreds, mask) / nrels
+            #     ), end=" ")
+            # print("S&G: {:+.3f}".format(
+            #         fn(gpreds, spreds, mask) / nrels
+            #     ), end=" ")
+            # print("#: {}".format(nrels), end=" ")
+            # print("T#: {}".format(gpreds.size()[0]))
 
         if self.training:
             return result

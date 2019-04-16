@@ -17,6 +17,8 @@ from lib.evaluation.sg_eval import BasicSceneGraphEvaluator
 from lib.pytorch_misc import print_para
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
+from lib.get_dataset_counts import get_counts
+
 conf = ModelConfig()
 if conf.model == 'motifnet':
     from lib.rel_model_tc import RelModelTC
@@ -142,6 +144,16 @@ def train_epoch(epoch_num):
             start = time.time()
     return pd.concat(tr, axis=1)
 
+if conf.icr:
+    print("Class ratios during training")
+    fg, bg = get_counts(must_overlap=True)
+    bg += 1; fg[:, :, 0] = bg
+    icr = np.sum(fg, axis=(0, 1)).astype(np.float32) + 1.0
+    icr = 1/icr
+    icr = icr / np.sum(icr)
+    # icr = 1-(icr / np.sum(icr))
+    print(icr)
+    icr = torch.from_numpy(icr).cuda()
 
 def train_batch(b, verbose=False):
     """
@@ -169,7 +181,10 @@ def train_batch(b, verbose=False):
     losses['class_loss'] = F.cross_entropy(result.rm_obj_dists, result.rm_obj_labels)
     losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1])
     # losses['teacher_loss'] = conf.distillation_weight * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
-    losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds)
+    if conf.icr:
+        losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds, weight=icr)
+    else:
+        losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds)
 
     loss = sum(losses.values())
 

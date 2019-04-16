@@ -49,6 +49,15 @@ export PYTHONPATH=$PYTHONPATH:$RPATH
 #     -cache cache/predcls_motifnet-size-predcls-coco-0.8-0.5_vgrel-20_eval
 #     # -test \
 
+# python models/eval_rels_tc.py \
+#     -m predcls \
+#     -model motifnet \
+#     -b 16 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -test \
+#     -ckpt checkpoints/motifnet-size-predcls-coco-1.0-0.5/vgrel-4.tar
+
 python models/eval_rels_tc.py \
     -m predcls \
     -model motifnet \
@@ -56,4 +65,13 @@ python models/eval_rels_tc.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-coco-1.0-0.5/vgrel-4.tar
+    -ckpt checkpoints/motifnet-size-predcls-coco-b-1.0-0.5/vgrel-8.tar
+
+python models/eval_rels_tc.py \
+    -m predcls \
+    -model motifnet \
+    -b 16 \
+    -p 100 \
+    -ngpu 1 \
+    -test \
+    -ckpt checkpoints/motifnet-size-predcls-hid-b-1.0-0.5/vgrel-5.tar

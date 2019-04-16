@@ -108,5 +108,5 @@ class HIDCorpusBias(FrequencyBias):
 
 
 if __name__ == '__main__':
-    fqb = CorpusBias()
+    fqb = FrequencyBias()
     import pdb; pdb.set_trace()
