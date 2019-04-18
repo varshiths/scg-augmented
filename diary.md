@@ -159,7 +159,7 @@ PREDCLS for MOTIFNET-SIZE
 | No Bias | 0.582 | 0.649 | 0.668 |
 | VG Bias (Prior) | 0.568 | 0.637 | 0.656 |
 | Coco Bias (OIE) | 0.280 | 0.372 | 0.434 |
-| HID Bias (OIE) | 0.000 | 0.000 | 0.000 |
+| HID Bias (OIE) | 0.461 | 0.561 | 0.611 |
 | Published | 0.580 | 0.649 | 0.668 |
 
 HPARAM EXPLR - VAL - PREDCLS for MOTIFNET-SIZE  
@@ -173,7 +173,7 @@ HPARAM EXPLR - VAL - PREDCLS for MOTIFNET-SIZE
 
 | HID Bias | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
-| 1.0, 0.5 | 0.000 | 0.000 | 0.000 |
+| 1.0, 0.5 | 0.473 | 0.558 | 0.603 |
 
 To avoid bad predictions in the beginning, only the student network is trained for the first five epochs.  
 This is simulated by starting training from the nob checkpoint at epoch 5.
@@ -206,6 +206,9 @@ Attempt with class weighting for teacher-student loss term:
 | ----- | ---- | ---- | ----- |
 | Coco Bias | 0.280 | 0.372 | 0.434 |
 | Coco Bias + ICR | 0.198 | 0.275 | 0.330 |
-| HID Bias | 0.000 | 0.000 | 0.000 |
+| HID Bias | 0.461 | 0.561 | 0.611 |
 | HID Bias + ICR | 0.408 | 0.500 | 0.549 |
 | Published | 0.580 | 0.649 | 0.668 |
+
+TODO:
+- Train the models ignoring the "bg" class to inspect the effect of the prior.
