@@ -155,6 +155,9 @@ if conf.icr:
     print(icr)
     icr = torch.from_numpy(icr).cuda()
 
+nbg_mask = torch.ones(51); nbg_mask[0] = 0
+nbg_mask = nbg_mask.cuda()
+
 def train_batch(b, verbose=False):
     """
     :param b: contains:
@@ -179,12 +182,10 @@ def train_batch(b, verbose=False):
 
     losses = {}
     losses['class_loss'] = F.cross_entropy(result.rm_obj_dists, result.rm_obj_labels)
-    losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1])
-    # losses['teacher_loss'] = conf.distillation_weight * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
-    if conf.icr:
-        losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds, weight=icr)
-    else:
-        losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds)
+    losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1], weight=nbg_mask)
+    if conf.bias_src:
+        # losses['teacher_loss'] = conf.distillation_weight * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
+        losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds, weight=nbg_mask)
 
     loss = sum(losses.values())
 

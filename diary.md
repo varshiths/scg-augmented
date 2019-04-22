@@ -212,3 +212,9 @@ Attempt with class weighting for teacher-student loss term:
 
 TODO:
 - Train the models ignoring the "bg" class to inspect the effect of the prior.
+
+## 18th - 24th April
+
+Currently training:
+- Models with "bg" class masked out.
+

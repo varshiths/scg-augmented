@@ -217,15 +217,20 @@ class RelModelTC(RelModel):
             prod_rep = F.tanh(prod_rep)
 
         result.rel_dists = self.rel_compress(prod_rep)
+
         if self.training:
-            assert self.freq_bias, "need to specify bias_src in training mode"
-            prior_indexed = self.freq_bias.index_with_labels(torch.stack((
-                result.obj_preds[rel_inds[:, 1]],
-                result.obj_preds[rel_inds[:, 2]],
-            ), 1))
-            teacher_rel_dists = result.rel_dists + self.prior_weight * prior_indexed
+            # assert self.freq_bias, "need to specify bias_src in training mode"
+            if self.freq_bias:
+                prior_indexed = self.freq_bias.index_with_labels(torch.stack((
+                    result.obj_preds[rel_inds[:, 1]],
+                    result.obj_preds[rel_inds[:, 2]],
+                ), 1))
+                teacher_rel_dists = result.rel_dists + self.prior_weight * prior_indexed
+            else:
+                teacher_rel_dists = result.rel_dists
+
             # result.teacher_rel_soft_preds = F.softmax(teacher_rel_dists, dim=1)
-            _, result.teacher_rel_hard_preds = teacher_rel_dists.max(1)
+            _, result.teacher_rel_hard_preds = teacher_rel_dists[:, 1:].max(1)
 
             # # gpreds = result.rel_labels[:, -1]
             # # spreds = result.rel_dists.max(1)[1]
