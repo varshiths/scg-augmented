@@ -218,3 +218,10 @@ TODO:
 Currently training:
 - Models with "bg" class masked out.
 
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| No Bias | 0.368 | 0.522 | 0.612 |
+| VG Bias | 0.341 | 0.471 | 0.551 |
+| COCO Bias | 0.394 | 0.515 | 0.577 |
+| HID Bias | 0.302 | 0.448 | 0.540 |
+| Published | 0.580 | 0.649 | 0.668 |
