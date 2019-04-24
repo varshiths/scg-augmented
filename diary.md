@@ -216,7 +216,9 @@ TODO:
 ## 18th - 24th April
 
 Currently training:
-- Models with "bg" class masked out.
+- Models with "bg" class masked out in both the teacher loss term and the gold loss term.
+
+PREDCLS for MOTIFNET-SIZE  
 
 | Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
@@ -225,3 +227,9 @@ Currently training:
 | COCO Bias | 0.394 | 0.515 | 0.577 |
 | HID Bias | 0.302 | 0.448 | 0.540 |
 | Published | 0.580 | 0.649 | 0.668 |
+
+Insights:
+
+- More hyper parameter tuning?
+- Look at images and priors
+- 

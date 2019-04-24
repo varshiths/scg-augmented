@@ -7,18 +7,6 @@ RPATH=$(pwd)
 export PYTHONPATH=$PYTHONPATH:$RPATH
 # echo $PYTHONPATH
 
-# evaluation script for hyper param search
-
-# python models/eval_rels_tc.py \
-#     -m predcls \
-#     -model motifnet \
-#     -b 16 \
-#     -p 100 \
-#     -ngpu 1 \
-#     -ckpt checkpoints/motifnet-size-predcls-nob/vgrel-16.tar \
-#     -cache cache/predcls_motifnet-size-predcls-nob_vgrel-16_eval
-#     # -test \
-
 # python models/eval_rels_tc.py \
 #     -m predcls \
 #     -model motifnet \
@@ -26,52 +14,51 @@ export PYTHONPATH=$PYTHONPATH:$RPATH
 #     -p 100 \
 #     -ngpu 1 \
 #     -test \
-#     -ckpt checkpoints/motifnet-size-predcls-coco-0.8-0.3/vgrel-4.tar \
-#     -cache cache/predcls_motifnet-size-predcls-coco-0.8-0.3_vgrel-4
+#     -ckpt checkpoints/motifnet-size-predcls-nbg-nob/vgrel-5.tar \
+#     -cache cache/predcls_motifnet-size-predcls-nbg-nob_vgrel-5
 
-# python models/eval_rels_tc.py \
+# python models/_visualize.py \
 #     -m predcls \
 #     -model motifnet \
 #     -b 16 \
 #     -p 100 \
 #     -ngpu 1 \
 #     -test \
-#     -ckpt checkpoints/motifnet-size-predcls-coco-1.0-0.5/vgrel-4.tar \
-#     -cache cache/predcls_motifnet-size-predcls-coco-1.0-0.5_vgrel-4
+#     -ckpt checkpoints/motifnet-size-predcls-nbg-nob/vgrel-5.tar \
+#     -cache cache/predcls_motifnet-size-predcls-nbg-nob_vgrel-5
 
-# python models/eval_rels_tc.py \
-#     -m predcls \
-#     -model motifnet \
-#     -b 16 \
-#     -p 100 \
-#     -ngpu 1 \
-#     -ckpt checkpoints/motifnet-size-predcls-coco-0.8-0.5/vgrel-20.tar \
-#     -cache cache/predcls_motifnet-size-predcls-coco-0.8-0.5_vgrel-20_eval
-#     # -test \
-
-# python models/eval_rels_tc.py \
+# python models/_visualize.py \
 #     -m predcls \
 #     -model motifnet \
 #     -b 16 \
 #     -p 100 \
 #     -ngpu 1 \
 #     -test \
-#     -ckpt checkpoints/motifnet-size-predcls-coco-1.0-0.5/vgrel-4.tar
+#     -ckpt checkpoints/motifnet-size-predcls-nbg-vg-1.0-0.5/vgrel-5.tar \
+#     -cache cache/predcls_motifnet-size-predcls-nbg-vg-1.0-0.5_vgrel-5
 
-python models/eval_rels_tc.py \
+python models/_visualize.py \
     -m predcls \
     -model motifnet \
     -b 16 \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-coco-b-1.0-0.5/vgrel-8.tar
+    -ckpt checkpoints/motifnet-size-predcls-nbg-coco-1.0-0.5/vgrel-6.tar \
+    -cache cache/predcls_motifnet-size-predcls-nbg-coco-1.0-0.5_vgrel-6
 
-python models/eval_rels_tc.py \
+mv qualitative/ results/qualitative-nbg-coco
+mkdir qualitative
+
+python models/_visualize.py \
     -m predcls \
     -model motifnet \
     -b 16 \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-hid-b-1.0-0.5/vgrel-5.tar
+    -ckpt checkpoints/motifnet-size-predcls-nbg-hid-1.0-0.5/vgrel-9.tar \
+    -cache cache/predcls_motifnet-size-predcls-nbg-hid-1.0-0.5_vgrel-9
+
+mv qualitative/ results/qualitative-nbg-hid
+mkdir qualitative
