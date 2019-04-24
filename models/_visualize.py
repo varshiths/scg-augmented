@@ -241,13 +241,13 @@ def val_batch(batch_num, b, evaluator, thrs=(20, 50, 100)):
     theimg2.save(os.path.join(pathname, 'imgbox.jpg'), quality=100, subsampling=0)
 
     with open(os.path.join(pathname, 'shit.txt'), 'w') as f:
-        f.write('good:\n')
+        f.write('\ngood:\n')
         for (o1, o2), p in edges.items():
             f.write('{} - {} - {}\n'.format(o1, p, o2))
-        f.write('fn:\n')
+        f.write('\nfn:\n')
         for (o1, o2), p in missededges.items():
             f.write('{} - {} - {}\n'.format(o1, p, o2))
-        f.write('shit:\n')
+        f.write('\nshit:\n')
         for (o1, o2), p in badedges.items():
             f.write('{} - {} - {}\n'.format(o1, p, o2))
 

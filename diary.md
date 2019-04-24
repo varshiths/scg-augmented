@@ -228,8 +228,9 @@ PREDCLS for MOTIFNET-SIZE
 | HID Bias | 0.302 | 0.448 | 0.540 |
 | Published | 0.580 | 0.649 | 0.668 |
 
-Insights:
-
 - More hyper parameter tuning?
 - Look at images and priors
-- 
+
+Insights:
+- Bad performace of HID is probably a hyperparam issue. The prior is weaker in case of HID, with the max value of prior confidence being 0.04 less than that of coco. Also, distillation works better with coco than hid (observed qualitatively). Find better ways to tune.
+- At low threshold, recall is bad as the confidence values are lower in general due to absence of training with negative label. In need of negative label / other methods to boost model confidence and decrease entropy. Train more?
