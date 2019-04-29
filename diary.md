@@ -234,3 +234,29 @@ PREDCLS for MOTIFNET-SIZE
 Insights:
 - Bad performace of HID is probably a hyperparam issue. The prior is weaker in case of HID, with the max value of prior confidence being 0.04 less than that of coco. Also, distillation works better with coco than hid (observed qualitatively). Find better ways to tune.
 - At low threshold, recall is bad as the confidence values are lower in general due to absence of training with negative label. In need of negative label / other methods to boost model confidence and decrease entropy. Train more?
+
+## 25th April - 1st May
+
+Recall@N explained:  
+Say there are P candidate obj-pairs for an image. For the P pairs, predict the most likely  
+predicate. This pair has a score:  
+predicate_score * obj_score1 * obj_score2  
+Consider the top N predictions of the model as per this score.  
+Among these, measure recall of the ground_truth relations among the valid pairs.  
+The score is the average of this score for various images in the test set.  
+
+Predicate scores and predictions exclude the "bg" class.  
+
+Number of object pairs where "bg" had the highest confidence: \~10 among 2000000 candidate predictions.  
+Even after inclusion in the predicate scores and predictions, the performance of a model trained with COCO bias did not change.   
+This says that bg is not the most confident prediction but is relevant in balancing other logits and assigning high confidence to correct classes.  
+
+Insights:  
+This is not an issue with bg class calibration. "bg" has a very low score.  
+Is this that the test distribution and the prior distribution is very different?  
+
+TODO:
+- To deal with the bg class problem and enforce high confidence misbalance.
+
+Currently training:
+- Models with "bg" class masked out in teacher loss term, gold loss term with 30000 the images in the dataset, to inspect if prior helps bridge the gap between train and test.  

@@ -52,6 +52,9 @@ def evaluate_from_dict(gt_entry, pred_entry, mode, result_dict, multiple_preds=F
     :param kwargs: 
     :return: 
     """
+
+    # import pdb; pdb.set_trace()
+
     gt_rels = gt_entry['gt_relations']
     gt_boxes = gt_entry['gt_boxes'].astype(float)
     gt_classes = gt_entry['gt_classes']
@@ -105,6 +108,10 @@ def evaluate_from_dict(gt_entry, pred_entry, mode, result_dict, multiple_preds=F
         # all background preds are ignored
         pred_rels = np.column_stack((pred_rel_inds, 1+rel_scores[:,1:].argmax(1)))
         predicate_scores = rel_scores[:,1:].max(1)
+        
+        # do not ignore the background preds
+        # pred_rels = np.column_stack((pred_rel_inds, rel_scores[:,0:].argmax(1)))
+        # predicate_scores = rel_scores[:,0:].max(1)
 
     pred_to_gt, pred_5ples, rel_scores = evaluate_recall(
                 gt_rels, gt_boxes, gt_classes,

@@ -108,6 +108,10 @@ class ModelConfig(object):
 
         self.icr = False
 
+        # add to incorporate fractional images training
+        self.num_im = -1
+        self.num_val_im = 5000
+
         self.parser = self.setup_parser()
         self.args = vars(self.parser.parse_args())
 
@@ -208,5 +212,7 @@ class ModelConfig(object):
         parser.add_argument('-distillation_weight', dest='distillation_weight', help='parameter controlling distillation extent from/to teacher', type=float, default=0.5)
 
         parser.add_argument('-icr', dest='icr', help='to weight the teacher student loss with class ratios', type=bool, default=False)
+
+        parser.add_argument('-num_im', dest='num_im', help='Num of images to include in the train set', type=int, default=-1)
 
         return parser

@@ -138,6 +138,8 @@ class VG(Dataset):
         train = cls('train', *args, **kwargs)
         val = cls('val', *args, **kwargs)
         test = cls('test', *args, **kwargs)
+        os.remove("data/visgenome/fnames.txt")
+        print("Deleted file: data/visgenome/fnames.txt")
         return train, val, test
 
     def __getitem__(self, index):
