@@ -260,3 +260,17 @@ TODO:
 
 Currently training:
 - Models with "bg" class masked out in teacher loss term, gold loss term with 30000 the images in the dataset, to inspect if prior helps bridge the gap between train and test.  
+
+PREDCLS for MOTIFNET-SIZE  
+
+| Model | Fraction | R@20 | R@50 | R@100 |
+| ----- | ----- | ---- | ---- | ----- |
+| No Bias | 100% | 0.368 | 0.522 | 0.612 |
+| No Bias |  30% | 0.344 | 0.488 | 0.581 |
+| VG Bias | 100% | 0.341 | 0.471 | 0.551 |
+| VG Bias |  30% | 0.205 | 0.330 | 0.437 |
+| COCO Bias | 100% | 0.394 | 0.515 | 0.577 |
+| COCO Bias |  30% | 0.427 | 0.532 | 0.578 |
+| HID Bias | 100% | 0.302 | 0.448 | 0.540 |
+| HID Bias |  30% | 0.209 | 0.334 | 0.444 |
+| Published | - | 0.580 | 0.649 | 0.668 |
