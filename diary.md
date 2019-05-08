@@ -274,3 +274,33 @@ PREDCLS for MOTIFNET-SIZE
 | HID Bias | 100% | 0.302 | 0.448 | 0.540 |
 | HID Bias |  30% | 0.209 | 0.334 | 0.444 |
 | Published | - | 0.580 | 0.649 | 0.668 |
+
+## 7th May - 1st May
+
+Concept Net Summary:
+- contains all objects
+- contains the following relations
+
+| ----- | ----- | ---- |
+| RelatedTo | HasPrerequisite | Entails |
+| FormOf | HasProperty | MannerOf |
+| IsA | MotivatedByGoal | LocatedNear |
+| PartOf | ObstructedBy | HasContext |
+| HasA | Desires | dbpedia |
+| UsedFor | CreatedBy | SimilarTo |
+| CapableOf | Synonym | EtymologicallyRelatedTo |
+| AtLocation | Antonym | EtymologicallyDerivedFrom |
+| Causes | DistinctFrom | CausesDesire |
+| HasSubevent | DerivedFrom | MadeOf |
+| HasFirstSubevent | SymbolOf | ReceivesAction |
+| HasLastSubevent | DefinedAs | InstanceOf |
+| ----- | ----- | ---- |
+
+- can build containment, prepositional, typeof, with relations
+- verbs exist as nodes but do not exhaustively list all objects involved in the action
+- verbs do not exist as relations
+- can harvest RelatedTo, HasSubevent, relation but with low confidence
+
+Building KGs:
+- Dictionary examples of verb phrases typically list down most possible uses of a phrase
+- Is possible to fine type the example sentences and replace with related objects from word net
