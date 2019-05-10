@@ -275,6 +275,9 @@ PREDCLS for MOTIFNET-SIZE
 | HID Bias |  30% | 0.209 | 0.334 | 0.444 |
 | Published | - | 0.580 | 0.649 | 0.668 |
 
+- HID is on a subset of VG. The fall in performance is possibly because of that.
+- Why VG Bias falls so much in performance with limited data as compared to No-Bias is not clear as well.
+
 ## 7th May - 1st May
 
 Concept Net Summary:
