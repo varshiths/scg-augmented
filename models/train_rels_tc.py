@@ -160,7 +160,10 @@ if conf.icr:
     print(icr)
     icr = torch.from_numpy(icr).cuda()
 
-nbg_mask = torch.ones(51); nbg_mask[0] = 0
+nbg_mask = torch.ones(51)
+if conf.nbg:
+    print("Masking bg class during training")
+    nbg_mask[0] = 0
 nbg_mask = nbg_mask.cuda()
 
 def train_batch(b, verbose=False):
