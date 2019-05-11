@@ -307,3 +307,10 @@ Concept Net Summary:
 Building KGs:
 - Dictionary examples of verb phrases typically list down most possible uses of a phrase
 - Is possible to fine type the example sentences and replace with related objects from word net
+
+## 2nd May - 10th May
+
+Discovered a bug where the teacher preds were off my 1.
+To fix and repeat the last two experiments.
+
+
