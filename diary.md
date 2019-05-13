@@ -228,6 +228,8 @@ PREDCLS for MOTIFNET-SIZE
 | HID Bias | 0.302 | 0.448 | 0.540 |
 | Published | 0.580 | 0.649 | 0.668 |
 
+**Note: Updated table after bug fix. In last section.**
+
 - More hyper parameter tuning?
 - Look at images and priors
 
@@ -275,6 +277,8 @@ PREDCLS for MOTIFNET-SIZE
 | HID Bias |  30% | 0.209 | 0.334 | 0.444 |
 | Published | - | 0.580 | 0.649 | 0.668 |
 
+**Note: To update table after bug fix. Check last section.**
+
 - HID is on a subset of VG. The fall in performance is possibly because of that.
 - Why VG Bias falls so much in performance with limited data as compared to No-Bias is not clear as well.
 
@@ -313,4 +317,15 @@ Building KGs:
 Discovered a bug where the teacher preds were off my 1.
 To fix and repeat the last two experiments.
 
+PREDCLS for MOTIFNET-SIZE  
 
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| No Bias | 0.354 | 0.509 | 0.602 |
+| VG Bias | 0.128 | 0.259 | 0.399 |
+| COCO Bias | 0.117 | 0.238 | 0.369 |
+| HID Bias | 0.122 | 0.247 | 0.385 |
+| Published | 0.580 | 0.649 | 0.668 |
+
+No kind of prior seems to be helping.
+Possible reason: Feedback effect.
