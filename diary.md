@@ -222,13 +222,13 @@ PREDCLS for MOTIFNET-SIZE
 
 | Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
-| No Bias | 0.368 | 0.522 | 0.612 |
-| VG Bias | 0.341 | 0.471 | 0.551 |
-| COCO Bias | 0.394 | 0.515 | 0.577 |
-| HID Bias | 0.302 | 0.448 | 0.540 |
-| Published | 0.580 | 0.649 | 0.668 |
+| No Bias | ~~0.368~~ | ~~0.522~~ | ~~0.612~~ |
+| VG Bias | ~~0.341~~ | ~~0.471~~ | ~~0.551~~ |
+| COCO Bias | ~~0.394~~ | ~~0.515~~ | ~~0.577~~ |
+| HID Bias | ~~0.302~~ | ~~0.448~~ | ~~0.540~~ |
+| Published | ~~0.580~~ | ~~0.649~~ | ~~0.668~~ |
 
-**Note: Updated table after bug fix. In last section.**
+**Note: Table invalid. Updated table after bug fix. In section 2 May to 10th May.**
 
 - More hyper parameter tuning?
 - Look at images and priors
@@ -277,7 +277,7 @@ PREDCLS for MOTIFNET-SIZE
 | HID Bias |  30% | 0.209 | 0.334 | 0.444 |
 | Published | - | 0.580 | 0.649 | 0.668 |
 
-**Note: To update table after bug fix. Check last section.**
+**Note: This table is invalid. To update table after bug fix.**
 
 - HID is on a subset of VG. The fall in performance is possibly because of that.
 - Why VG Bias falls so much in performance with limited data as compared to No-Bias is not clear as well.
@@ -317,6 +317,8 @@ Building KGs:
 Discovered a bug where the teacher preds were off my 1.
 To fix and repeat the last two experiments.
 
+Model with the background class masked out for both the teacher loss as well as the gold label loss.  
+
 PREDCLS for MOTIFNET-SIZE  
 
 | Model | R@20 | R@50 | R@100 |
@@ -327,5 +329,14 @@ PREDCLS for MOTIFNET-SIZE
 | HID Bias | 0.122 | 0.247 | 0.385 |
 | Published | 0.580 | 0.649 | 0.668 |
 
-No kind of prior seems to be helping.
-Possible reason: Feedback effect.
+It is obvious that no kind of prior seems to be helping. One of possible reasons why in case of the bug, the results were coherent could be because  
+the teacher loss term is uniform noise. In this case, the model probably ignored the teacher loss and optimized the gold loss.  
+It is not very clear if this is actually the case.  
+
+However, one possible reason why the model is underperforming is because there could be a possible feedback effect.  
+If one particular logit, as predicted by the student model is already strong and the prior supports it,  
+it is likely to be strengthened further.
+
+Since there is a leakage class for the classifier, there is no natural bound to the logits and so it is possible there is a shift in the mean of the logits.
+
+This particular distribution shift does happen in the case of a classifier with no examples for one of the classes, which is what is happening with the mask.
