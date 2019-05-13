@@ -198,19 +198,24 @@ In another variation, the _\_\_background\_\__ class is completely omitted from 
 
 | Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
-| No-Bias | 0.368 | 0.522 | 0.612 |
-| VG-Prior | 0.341 | 0.471 | 0.551 |
-| COCO | 0.394 | 0.515 | 0.577 |
-| HID | 0.302 | 0.448 | 0.540 |
+| No-Bias | 0.354 | 0.509 | 0.602 |
+| VG-Prior | 0.128 | 0.259 | 0.399 |
+| COCO | 0.117 | 0.238 | 0.369 |
+| HID | 0.122 | 0.247 | 0.385 |
 | Published | 0.580 | 0.649 | 0.668 |
 
-While this method does in fact perform worse than the published results (non-distillation setting), the complementary effect of the prior is evident, at least in the case of COCO, where the performance is higher than the scenario where no prior knowledge is distilled into the network. The effect of absence of _\_\_background\_\__ class is mitigated, as the performance of the models trained in a distillation setting are not as far away from the No-Bias scenario as in the previous setting.  
+
+~~While this method does in fact perform worse than the published results (non-distillation setting), the complementary effect of the prior is evident, at least in the case of COCO, where the performance is higher than the scenario where no prior knowledge is distilled into the network. The effect of absence of _\_\_background\_\__ class is mitigated, as the performance of the models trained in a distillation setting are not as far away from the No-Bias scenario as in the previous setting.~~  
+
+It is evident that distillation here is not helpful at all. One possible cause to this performance is that there is a feedback effect. As the student is training and becomes confident in a particular relation that the prior supports, it is reinforced as long as the training proceeds.  
 
 The difference in performance between a model trained in the distillation scenario is higher in the case of lower N values (0.234 for N=20, 0.112 for N=100). This indicates that while the correct tuples are in fact present in the predicted tuples, they do not have a high enough confidence to be ranked higher than the others.  
 
 One possible reason for this behaviour is the lack of leakage of probability mass into _\_\_background\_\__. In case of absence of an appropriate non-background label, in this setting, the model is expected to produce a flat distribution. This kind of modeling leads to an increase in the average entropy of the model. This means that the predicted labels have lower confidence values leading to higher and close ranking gold relations.  
 
 ### Data-scarcity
+
+**Note: Due to a bug found in the codebase (which was fixed), this section is now invalid and is to be updated.**
 
 The objective of introducing side information is to reduce the dependence on large amounts of ground truth data and make do with smaller datasets.  
 
