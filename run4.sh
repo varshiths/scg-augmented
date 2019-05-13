@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=2
 
 RPATH=$(pwd)
 # RPATH=$(dirname `pwd`)
@@ -15,8 +15,8 @@ python models/eval_rels.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-nbg-3-nob/vgrel-5.tar \
-    -cache cache/sgdet_motifnet-size-predcls-nbg-3-nob_vgrel-5
+    -ckpt checkpoints/motifnet-size-predcls-nbg-nob/vgrel-8.tar \
+    -cache cache/sgdet_motifnet-size-predcls-nbg-nob_vgrel-8
 
 python models/eval_rels.py \
     -m predcls \
@@ -26,8 +26,8 @@ python models/eval_rels.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-nbg-3-coco-1.0-0.5/vgrel-12.tar \
-    -cache cache/sgdet_motifnet-size-predcls-nbg-3-coco-1.0-0.5_vgrel-12
+    -ckpt checkpoints/motifnet-size-predcls-nbg-vg-1.0-0.5/vgrel-4.tar \
+    -cache cache/sgdet_motifnet-size-predcls-nbg-vg-1.0-0.5_vgrel-4
 
 python models/eval_rels.py \
     -m predcls \
@@ -37,8 +37,8 @@ python models/eval_rels.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-nbg-3-vg-1.0-0.5/vgrel-10.tar \
-    -cache cache/sgdet_motifnet-size-predcls-nbg-3-vg-1.0-0.5_vgrel-10
+    -ckpt checkpoints/motifnet-size-predcls-nbg-coco-1.0-0.5/vgrel-8.tar \
+    -cache cache/sgdet_motifnet-size-predcls-nbg-coco-1.0-0.5_vgrel-8
 
 python models/eval_rels.py \
     -m predcls \
@@ -48,5 +48,5 @@ python models/eval_rels.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-nbg-3-hid-1.0-0.5/vgrel-5.tar \
-    -cache cache/sgdet_motifnet-size-predcls-nbg-3-hid-1.0-0.5_vgrel-5
+    -ckpt checkpoints/motifnet-size-predcls-nbg-hid-1.0-0.5/vgrel-5.tar \
+    -cache cache/sgdet_motifnet-size-predcls-nbg-hid-1.0-0.5_vgrel-5

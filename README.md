@@ -1,6 +1,6 @@
 # neural-motifs
 
-This is a project attempting to adapt neural-motifs to incorporate side information. For details, read this [report](REPORT.md). The original README.md is following.
+This is a project attempting to adapt neural-motifs to incorporate side information. For details, read this [report](REPORT.md). The original README.md is following. For installation and setting up the reposiroty follow the steps described below. For a guide to the code base, read this [brief description](CODE.md). 
 
 ### Like this work, or scene understanding in general? You might be interested in checking out my brand new dataset VCR: Visual Commonsense Reasoning, at [visualcommonsense.com](https://visualcommonsense.com)!
 

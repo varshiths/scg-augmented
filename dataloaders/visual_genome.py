@@ -270,11 +270,11 @@ def load_image_filenames(image_file, image_dir=VG_IMAGES):
                 fns.append(filename_2)
         assert len(fns) == 108073
 
-        print("Writing into:", TEMPFNAME)
+        print("Writing into temp file:", TEMPFNAME)
         with open(TEMPFNAME, "wb+") as f:
             pickle.dump(fns, f)
     else:
-        print("Loading filenames from:", TEMPFNAME)
+        print("Loading filenames from temp file:", TEMPFNAME)
         with open(TEMPFNAME, "rb") as f:
             fns = pickle.load(f)
 
