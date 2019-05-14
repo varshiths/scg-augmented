@@ -113,6 +113,8 @@ class ModelConfig(object):
         self.num_im = -1
         self.num_val_im = 5000
 
+        self.teacher1_ckpt = None
+
         self.parser = self.setup_parser()
         self.args = vars(self.parser.parse_args())
 
@@ -216,5 +218,7 @@ class ModelConfig(object):
         parser.add_argument('-nbg', dest='nbg', action='store_true', help='to mask out the training for the bg class')
 
         parser.add_argument('-num_im', dest='num_im', help='Num of images to include in the train set', type=int, default=-1)
+
+        parser.add_argument('-teacher1_ckpt', dest='teacher1_ckpt', help='Filename to load teacher1 from', type=str, default='')
 
         return parser

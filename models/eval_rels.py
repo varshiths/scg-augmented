@@ -28,6 +28,10 @@ train_loader, val_loader = VGDataLoader.splits(train, val, mode='rel',
                                                batch_size=conf.batch_size,
                                                num_workers=conf.num_workers,
                                                num_gpus=conf.num_gpus)
+_, test_loader = VGDataLoader.splits(train, test, mode='rel',
+                                               batch_size=conf.batch_size,
+                                               num_workers=conf.num_workers,
+                                               num_gpus=conf.num_gpus)
 
 detector = RelModel(classes=train.ind_to_classes, rel_classes=train.ind_to_predicates,
                     num_gpus=conf.num_gpus, mode=conf.mode, require_overlap_det=True,
