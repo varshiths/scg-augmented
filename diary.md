@@ -335,7 +335,7 @@ It is not very clear if this is actually the case.
 
 However, one possible reason why the model is underperforming is because there could be a possible feedback effect.  
 If one particular logit, as predicted by the student model is already strong and the prior supports it,  
-it is likely to be strengthened further.
+it is likely to be strengthened further - because the teacher would support it along with the gold label. It is important I think to decay the weight of the teacher as training progresses.
 
 Since there is a leakage class for the classifier, there is no natural bound to the logits and so it is possible there is a shift in the mean of the logits.
 
