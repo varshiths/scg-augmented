@@ -9,17 +9,21 @@ from pprint import pprint
 
 from misc.openie_utils import remap_preds, test_caps, post_process_preds, post_process_objs
 
+from config import VG_SGG_DICT_FN
+
+TRIPLES_FILE = "descriptions_svo.txt"
+INTM_FILE = "descriptions_text.npy"
+OUTPUT_FILE = "descriptions_freq.npy"
+
 # split = sys.argv[1]
 # assert split in ["a", "b", "c", "d", "e", "f"]
 
-VG_SGG_DICT_FN = "../../datasets/VG-SGG-dicts.json"
-TRIPLES_FILE = "../../datasets/hid/descriptions_svo.txt"
+# set from config
+# VG_SGG_DICT_FN = "../../datasets/VG-SGG-dicts.json"
 
-INTM_FILE = "mscoco_captions_text.npy"
-OUTPUT_FILE = "mscoco_captions_freq.npy"
-
-# INTM_FILE = "descriptions_text.npy"
-# OUTPUT_FILE = "descriptions_freq.npy"
+# TRIPLES_FILE = "../../datasets/hid/descriptions_svo.txt"
+# INTM_FILE = "mscoco_captions_text.npy"
+# OUTPUT_FILE = "mscoco_captions_freq.npy"
 
 # CAPTIONS_FILE = "../../datasets/hid/split_descriptions_{}.txt".format(split)
 # OUTPUT_FILE = "descriptions_freq_a{}.npy".format(split)
@@ -41,37 +45,38 @@ preds, predicate_to_ind = remap_preds(predicate_to_ind)
 num_classes = len(objs)
 num_predicates = len(preds)
 
-# triples = []
-# print("Reading file...")
-# with codecs.open(TRIPLES_FILE) as f:
-#     for line in f:
-#         svo = [x.strip() for x in line.split("|")]
-#         if len(svo) != 3:
-#             continue
-#         triples.extend(svo)
-# print("Done.")
+triples = []
+print("Reading file...")
+with codecs.open(TRIPLES_FILE) as f:
+    for line in f:
+        svo = [x.strip() for x in line.split("|")]
+        if len(svo) != 3:
+            continue
+        triples.extend(svo)
+print("Done.")
 
-# import spacy
-# spacy.prefer_gpu()
+# lemmatizing
+import spacy
+spacy.prefer_gpu()
 
-# nlp = spacy.load('en', disable=['parser', 'ner'])
+nlp = spacy.load('en', disable=['parser', 'ner'])
 
-# _triples = triples
+_triples = triples
 
-# ltriples = []
-# for doc in tqdm(nlp.pipe(
-#     texts=_triples, 
-#     as_tuples=False, 
-#     n_threads=2, 
-#     batch_size=10000), total=len(_triples)):    
-#     ltriples.append([x.lemma_ for x in doc])
-# ltriples = np.array(ltriples)
+ltriples = []
+for doc in tqdm(nlp.pipe(
+    texts=_triples, 
+    as_tuples=False, 
+    n_threads=2, 
+    batch_size=10000), total=len(_triples)):    
+    ltriples.append([x.lemma_ for x in doc])
+ltriples = np.array(ltriples)
 
-# ltriples = np.reshape(ltriples, (-1, 3))
-# np.save(INTM_FILE, ltriples)
+ltriples = np.reshape(ltriples, (-1, 3))
+np.save(INTM_FILE, ltriples)
 
+# actual build of prior
 ltriples = np.load(INTM_FILE)
-
 def ret_ind(objc, dt):
     for obj, ind in dt.items():
         if obj in objc:

@@ -7,6 +7,7 @@ from config import DATA_PATH
 import os
 from lib.get_dataset_counts import get_counts
 
+from config import REGION_CAPTIONS_BIAS, COCO_CAPTIONS_BIAS, HID_CAPTIONS_BIAS
 
 class FrequencyBias(nn.Module):
     """
@@ -70,9 +71,9 @@ class RCCorpusBias(FrequencyBias):
 
     def init_fg_matrix(self, corpus="region_captions"):
         try:
-            self.fg_matrix = np.load("data/captions_freq.npy") + 1
+            self.fg_matrix = np.load(REGION_CAPTIONS_BIAS) + 1
         except Exception as e:
-            raise Exception("Please generate captions_freq.npy using scripts in misc and then proceed")
+            raise Exception("Please generate region captions_freq.npy using scripts in misc, place it in the data folder and then proceed")
 
 class COCOCorpusBias(FrequencyBias):
     """
@@ -86,9 +87,9 @@ class COCOCorpusBias(FrequencyBias):
 
     def init_fg_matrix(self, corpus="mscoco_captions"):
         try:
-            self.fg_matrix = np.load("data/mscoco_captions_freq.npy") + 1
+            self.fg_matrix = np.load(COCO_CAPTIONS_BIAS) + 1
         except Exception as e:
-            raise Exception("Please generate mscoco_captions_freq.npy using scripts in misc and then proceed")
+            raise Exception("Please generate mscoco_captions_freq.npy using scripts in misc, place it in the data folder and then proceed")
 
 class HIDCorpusBias(FrequencyBias):
     """
@@ -102,9 +103,9 @@ class HIDCorpusBias(FrequencyBias):
 
     def init_fg_matrix(self, corpus="HIDCorpusBias"):
         try:
-            self.fg_matrix = np.load("data/descriptions_freq.npy") + 1
+            self.fg_matrix = np.load(HID_CAPTIONS_BIAS) + 1
         except Exception as e:
-            raise Exception("Please generate descriptions_freq.npy using scripts in misc and then proceed")
+            raise Exception("Please generate descriptions_freq.npy using scripts in misc, place it in the data folder and then proceed")
 
 
 if __name__ == '__main__':

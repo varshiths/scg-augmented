@@ -26,6 +26,12 @@ VG_SGG_DICT_FN = stanford_path('VG-SGG-dicts.json')
 PROPOSAL_FN = stanford_path('proposals.h5')
 
 COCO_PATH = 'data/coco'
+
+# to be generated and placed in this location
+REGION_CAPTIONS_BIAS = "data/captions_freq.npy"
+COCO_CAPTIONS_BIAS = "data/mscoco_captions_freq.npy"
+HID_CAPTIONS_BIAS = "data/descriptions_freq.npy"
+
 # =============================================================================
 # =============================================================================
 

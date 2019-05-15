@@ -248,7 +248,7 @@ def load_image_filenames(image_file, image_dir=VG_IMAGES):
     :param image_dir: directory where the VisualGenome images are located
     :return: List of filenames corresponding to the good images
     """
-    TEMPFNAME = "data/visgenome/fnames.txt"
+    TEMPFNAME = "/tmp/filenames-visualgenome-images-on-disk.txt"
 
     if not os.path.exists(TEMPFNAME):
         print("Loading filenames")

@@ -40,4 +40,15 @@ This folder contains code for training and evaluating the models in various sett
 
 ### `misc`
 
-This folder contains code relevant for preprocessing captions in a text file and generation of a prior for the sake of 
+This folder contains code relevant for preprocessing captions in a text file and generation of a prior for the sake of use.
+
+1. `misc/process_large_corpus.sh`: Script that takes in a corpus file as input. The corpus should be one sentence in a line ending with a period. This is to be run from inside the misc folder. This produces a file with svo triples.
+All other files are relevant to working of this openie parser.
+
+### root
+
+The root folder contains the following scripts.
+
+1. `openie_freq.py`: Takes as input the svo triples file and outputs an `.npy` file. This file is the prior counts as extracted from the svo triples. Set file names at the beginning of the file.
+1. `config.py`: Contains the list of arguments various files in `models` folder take. Also is the location of all paths of various files.
+1. `run*.sh`: Sample runs of training scripts.
