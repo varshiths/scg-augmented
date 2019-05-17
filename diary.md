@@ -320,6 +320,7 @@ To fix and repeat the last two experiments.
 Model with the background class masked out for both the teacher loss as well as the gold label loss.  
 
 PREDCLS for MOTIFNET-SIZE  
+BG MASKED  
 
 | Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
@@ -340,3 +341,28 @@ it is likely to be strengthened further - because the teacher would support it a
 Since there is a leakage class for the classifier, there is no natural bound to the logits and so it is possible there is a shift in the mean of the logits.
 
 This particular distribution shift does happen in the case of a classifier with no examples for one of the classes, which is what is happening with the mask.
+
+## 11th May - 17th May
+
+The results above are when the background class is masked out.
+
+Masking out has the following effect:
+The model can still predict 51 labels ( 50 relations + "BG" ). However, the training data for the label "BG" is ignored.
+In case of the teacher, it is allowed to predict 51 labels, but the teacher labels that are "BG" are ignored in the teacher loss.
+
+Since the softmax is applied over 51 logits (for one candidate object pair), and training data for one of the classes is absent, it is possible that the model misbehaves.
+
+To rectify this, the class "BG" is totally removed from the output label space of the student as well as the teacher.
+
+Awaiting results of this setting. Should be available over the weekend.
+
+PREDCLS for MOTIFNET-SIZE  
+BG REMOVED FROM OUTPUT LABEL SPACE
+
+| Model | R@20 | R@50 | R@100 |
+| ----- | ---- | ---- | ----- |
+| No Bias | - | - | - |
+| VG Bias | - | - | - |
+| COCO Bias | - | - | - |
+| HID Bias | - | - | - |
+| Published | 0.580 | 0.649 | 0.668 |
