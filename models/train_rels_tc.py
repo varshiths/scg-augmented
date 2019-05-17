@@ -54,7 +54,7 @@ detector = RelModelTC(classes=train.ind_to_classes, rel_classes=train.ind_to_pre
                     limit_vision=conf.limit_vision,
                     prior_weight=conf.prior_weight,
                     bias_src=conf.bias_src,
-                    no_bg=conf.nbg,
+                    no_bg=conf.no_bg,
                     )
 
 # Freeze the detector
@@ -190,26 +190,21 @@ def train_batch(b, verbose=False):
     result = detector[b]
 
     losses = {}
+
     losses['class_loss'] = F.cross_entropy(result.rm_obj_dists, result.rm_obj_labels)
 
-    # todo
-    if conf.no_bg:
-        logits = result.rel_dists[:, 1:]
+    if not conf.nbg:
 
-        gold = result.rel_labels[:, -1]-1
-        no_bg_mask = 1-torch.eq(gold, -1).type(torch.DoubleTensor)
-        indl = (1-cdw) * F.cross_entropy(logits, gold, reduction=None)
+        no_bg_mask = torch.ne(result.gold_labels, -1).type(torch.DoubleTensor)
+        indl = (1-cdw) * F.cross_entropy(result.rel_dists, result.gold_labels, reduction=None)
         losses['rel_loss'] = torch.sum(indl*no_bg_mask) / torch.sum(no_bg_mask)
 
         if conf.bias_src:
-
-            teacher = result.teacher_rel_hard_preds-1
-            no_bg_mask_t = 1-torch.eq(teacher, -1).type(torch.DoubleTensor)
-            indl_t = cdw * F.cross_entropy(logits, teacher, reduction=None)
-            losses['teacher_loss'] = torch.sum(indl_t * no_bg_mask_t) / torch.sum(no_bg_mask_t)
+            losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds)
 
     else:
-        losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1], weight=nbg_mask)
+        
+        losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.gold_labels, weight=nbg_mask)
         if conf.bias_src:
             losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds, weight=nbg_mask)
 

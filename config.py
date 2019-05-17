@@ -222,8 +222,9 @@ class ModelConfig(object):
         parser.add_argument('-distillation_weight', dest='distillation_weight', help='parameter controlling distillation extent from/to teacher', type=float, default=0.5)
 
         parser.add_argument('-icr', dest='icr', help='to weight the teacher student loss with class ratios', type=bool, default=False)
+        
         parser.add_argument('-nbg', dest='nbg', action='store_true', help='to mask out the training for the bg class')
-        parser.add_argument('-no_bg', dest='no_bg', action='store_true', help='to effectively remove bg class from the output vocabulary')
+        parser.add_argument('-no_bg', dest='no_bg', action='store_true', help='to effectively remove bg class from the output vocabulary. Do not use along with -nbg')
 
         parser.add_argument('-num_im', dest='num_im', help='Num of images to include in the train set', type=int, default=-1)
 
