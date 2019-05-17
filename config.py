@@ -114,6 +114,7 @@ class ModelConfig(object):
 
         self.icr = False
         self.nbg = False
+        self.no_bg = False
 
         # add to incorporate fractional images training
         self.num_im = -1
@@ -222,6 +223,7 @@ class ModelConfig(object):
 
         parser.add_argument('-icr', dest='icr', help='to weight the teacher student loss with class ratios', type=bool, default=False)
         parser.add_argument('-nbg', dest='nbg', action='store_true', help='to mask out the training for the bg class')
+        parser.add_argument('-no_bg', dest='no_bg', action='store_true', help='to effectively remove bg class from the output vocabulary')
 
         parser.add_argument('-num_im', dest='num_im', help='Num of images to include in the train set', type=int, default=-1)
 

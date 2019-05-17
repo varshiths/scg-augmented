@@ -42,7 +42,8 @@ class RelModelTC(RelModel):
                  nl_obj=1, nl_edge=2, use_resnet=False, order='confidence', thresh=0.01,
                  use_proposals=False, pass_in_obj_feats_to_decoder=True,
                  pass_in_obj_feats_to_edge=True, rec_dropout=0.0, use_tanh=True, limit_vision=True, 
-                 prior_weight=1.0, bias_src=None):
+                 prior_weight=1.0, bias_src=None,
+                 no_bg=False):
         """
         :param classes: Object classes
         :param rel_classes: Relationship classes. None if were not using rel mode
@@ -70,6 +71,8 @@ class RelModelTC(RelModel):
 
         self.prior_weight = prior_weight
         self.bias_src = bias_src
+
+        self.no_bg = no_bg
 
         self.use_vision = use_vision
         self.use_tanh = use_tanh
@@ -226,7 +229,13 @@ class RelModelTC(RelModel):
                     result.obj_preds[rel_inds[:, 2]],
                 ), 1))
                 teacher_rel_dists = result.rel_dists + self.prior_weight * prior_indexed
-                _, result.teacher_rel_hard_preds = teacher_rel_dists.max(1)
+
+                # todo
+                if self.no_bg:
+                    _, result.teacher_rel_hard_preds = teacher_rel_dists.max(1)
+                else:
+                    _, result.teacher_rel_hard_preds = teacher_rel_dists[:, 1:].max(1) + 1
+
             else:
                 pass
                 # teacher_rel_dists = result.rel_dists
