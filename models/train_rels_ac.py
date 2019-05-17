@@ -1,5 +1,5 @@
 """
-Training script for scene graph detection. Integrated with my faster rcnn setup
+Training script for scene graph detection with teacher student distillation framework with increasing data quanitities.
 """
 
 from dataloaders.visual_genome import VGDataLoader, VG
@@ -31,7 +31,7 @@ else:
 print("\nTrain: {} images".format(conf.num_im))
 print("Validation: {} images".format(conf.num_val_im))
 
-train, val, _ = VG.splits(num_val_im=conf.val_size, filter_duplicate_rels=True,
+train, val, test = VG.splits(num_val_im=conf.val_size, filter_duplicate_rels=True,
                           use_proposals=conf.use_proposals,
                           filter_non_overlap=conf.mode == 'sgdet',
                           num_im=conf.num_im,
@@ -54,7 +54,6 @@ detector = RelModelTC(classes=train.ind_to_classes, rel_classes=train.ind_to_pre
                     limit_vision=conf.limit_vision,
                     prior_weight=conf.prior_weight,
                     bias_src=conf.bias_src,
-                    no_bg=conf.no_bg,
                     )
 
 # Freeze the detector
@@ -190,23 +189,11 @@ def train_batch(b, verbose=False):
     result = detector[b]
 
     losses = {}
-
     losses['class_loss'] = F.cross_entropy(result.rm_obj_dists, result.rm_obj_labels)
-
-    if not conf.nbg:
-
-        no_bg_mask = torch.ne(result.gold_labels, -1).type(torch.FloatTensor).cuda()
-        indl = (1-cdw) * F.cross_entropy(result.rel_dists, result.gold_labels, reduce=False)
-        losses['rel_loss'] = torch.sum(indl*no_bg_mask) / torch.sum(no_bg_mask)
-
-        if conf.bias_src:
-            losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds)
-
-    else:
-        
-        losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.gold_labels, weight=nbg_mask)
-        if conf.bias_src:
-            losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds, weight=nbg_mask)
+    losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1], weight=nbg_mask)
+    if conf.bias_src:
+        # losses['teacher_loss'] = conf.distillation_weight * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
+        losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, result.teacher_rel_hard_preds, weight=nbg_mask)
 
     loss = sum(losses.values())
 
@@ -257,8 +244,9 @@ def val_batch(batch_num, b, evaluator):
         )
 
 
-print("Training starts now!")
+print("Training with incremental data starts now!")
 optimizer, scheduler = get_optim(conf.lr * conf.num_gpus * conf.batch_size)
+
 for epoch in range(start_epoch + 1, start_epoch + 1 + conf.num_epochs):
     rez = train_epoch(epoch)
     print("overall{:2d}: ({:.3f})\n{}".format(epoch, rez.mean(1)['total'], rez.mean(1)), flush=True)
