@@ -194,9 +194,9 @@ def train_batch(b, verbose=False):
 
     # todo
     if conf.no_bg:
-    	logits = result.rel_dists[:, 1:]
+        logits = result.rel_dists[:, 1:]
 
-    	gold = result.rel_labels[:, -1]-1
+        gold = result.rel_labels[:, -1]-1
         no_bg_mask = 1-torch.eq(gold, -1).type(torch.DoubleTensor)
         indl = (1-cdw) * F.cross_entropy(logits, gold, reduction=None)
         losses['rel_loss'] = torch.sum(indl*no_bg_mask) / torch.sum(no_bg_mask)
@@ -205,7 +205,7 @@ def train_batch(b, verbose=False):
 
             teacher = result.teacher_rel_hard_preds-1
             no_bg_mask_t = 1-torch.eq(teacher, -1).type(torch.DoubleTensor)
-        	indl_t = cdw * F.cross_entropy(logits, teacher, reduction=None)
+            indl_t = cdw * F.cross_entropy(logits, teacher, reduction=None)
             losses['teacher_loss'] = torch.sum(indl_t * no_bg_mask_t) / torch.sum(no_bg_mask_t)
 
     else:

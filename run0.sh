@@ -7,18 +7,32 @@ RPATH=$(pwd)
 export PYTHONPATH=$PYTHONPATH:$RPATH
 # echo $PYTHONPATH
 
-python models/train_rels_it.py \
+# python models/train_rels_it.py \
+#     -m predcls \
+#     -model motifnet \
+#     -order size \
+#     -b 2 \
+#     -p 100 \
+#     -ngpu 1 \
+#     -ckpt checkpoints/vgdet/vg-24.tar \
+#     -teacher1_ckpt checkpoints/motifnet-size-predcls-nob/vgrel-16.tar \
+#     -bias_src hid \
+#     -prior_weight 1.0 \
+#     -nbg \
+#     -distillation_weight 0.5 \
+#     -save_dir checkpoints/temp
+#     # -num_im 30000
+
+python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 2 \
+    -b 8 \
     -p 100 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
-    -teacher1_ckpt checkpoints/motifnet-size-predcls-nob/vgrel-16.tar \
-    -bias_src hid \
+    -bias_src coco \
     -prior_weight 1.0 \
-    -nbg \
     -distillation_weight 0.5 \
+    -no_bg \
     -save_dir checkpoints/temp
-    # -num_im 30000

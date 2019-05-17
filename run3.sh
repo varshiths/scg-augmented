@@ -16,9 +16,9 @@ python models/train_rels_tc.py \
     -b 8 \
     -p 100 \
     -ngpu 1 \
-    -nbg \
+    -no_bg \
     -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-size-predcls-nbg-nob
+    -save_dir checkpoints/motifnet-size-predcls-nobg-nob
     # -num_im 30000
 
 python models/train_rels_tc.py \
@@ -31,9 +31,9 @@ python models/train_rels_tc.py \
     -ckpt checkpoints/vgdet/vg-24.tar \
     -bias_src coco \
     -prior_weight 1.0 \
-    -nbg \
     -distillation_weight 0.5 \
-    -save_dir checkpoints/motifnet-size-predcls-nbg-coco-1.0-0.5
+    -no_bg \
+    -save_dir checkpoints/motifnet-size-predcls-nobg-coco-1.0-0.5
     # -num_im 30000
     
 python models/train_rels_tc.py \
@@ -46,9 +46,9 @@ python models/train_rels_tc.py \
     -ckpt checkpoints/vgdet/vg-24.tar \
     -bias_src vg \
     -prior_weight 1.0 \
-    -nbg \
     -distillation_weight 0.5 \
-    -save_dir checkpoints/motifnet-size-predcls-nbg-vg-1.0-0.5
+    -no_bg \
+    -save_dir checkpoints/motifnet-size-predcls-nobg-vg-1.0-0.5
     # -num_im 30000
 
 python models/train_rels_tc.py \
@@ -61,7 +61,7 @@ python models/train_rels_tc.py \
     -ckpt checkpoints/vgdet/vg-24.tar \
     -bias_src hid \
     -prior_weight 1.0 \
-    -nbg \
     -distillation_weight 0.5 \
-    -save_dir checkpoints/motifnet-size-predcls-nbg-hid-1.0-0.5
+    -no_bg \
+    -save_dir checkpoints/motifnet-size-predcls-nobg-hid-1.0-0.5
     # -num_im 30000
