@@ -220,7 +220,6 @@ class RelModelTC(RelModel):
             prod_rep = F.tanh(prod_rep)
 
         result.rel_dists = self.rel_compress(prod_rep)
-        result.gold_labels = result.rel_labels[:, -1]
 
         if self.training:
             # assert self.freq_bias, "need to specify bias_src in training mode"
@@ -242,6 +241,12 @@ class RelModelTC(RelModel):
 
             # result.teacher_rel_soft_preds = F.softmax(teacher_rel_dists, dim=1)
 
+            result.gold_labels = result.rel_labels[:, -1]
+            # to remove bg class from vocab
+            if self.no_bg:
+                result.rel_dists = result.rel_dists[:, 1:]
+                result.gold_labels = result.rel_labels[:, -1]-1
+                
             # # gpreds = result.rel_labels[:, -1]
             # # spreds = result.rel_dists.max(1)[1]
             # # tpreds = teacher_rel_dists.max(1)[1]
@@ -281,10 +286,6 @@ class RelModelTC(RelModel):
             # print("#: {}".format(nrels), end=" ")
             # print("T#: {}".format(gpreds.size()[0]))
 
-        # to remove bg class from vocab
-        if self.no_bg:
-            result.rel_dists = result.rel_dists[:, 1:]
-            result.gold_labels = result.rel_labels[:, -1]-1
 
         if self.training:
             return result
