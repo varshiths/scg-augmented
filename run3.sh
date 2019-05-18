@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=2
 
 RPATH=$(pwd)
 # RPATH=$(dirname `pwd`)
@@ -13,8 +13,8 @@ python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 16 \
-    -p 100 \
+    -b 18 \
+    -p 1000 \
     -ngpu 1 \
     -no_bg \
     -ckpt checkpoints/vgdet/vg-24.tar \
@@ -25,8 +25,8 @@ python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 16 \
-    -p 100 \
+    -b 18 \
+    -p 1000 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
     -bias_src vg \
@@ -40,8 +40,8 @@ python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 16 \
-    -p 100 \
+    -b 18 \
+    -p 1000 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
     -bias_src coco \
@@ -55,8 +55,8 @@ python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 16 \
-    -p 100 \
+    -b 18 \
+    -p 1000 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
     -bias_src hid \
