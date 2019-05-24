@@ -115,8 +115,8 @@ class CustomBias(FrequencyBias):
     fg_matrix init to load from saved pickle file
     """
     def __init__(self, prior_file=None, eps=1e-3):
-        super(CustomBias, self).__init__(eps)
         self.prior_file = prior_file
+        super(CustomBias, self).__init__(eps)
 
     def init_fg_matrix(self, corpus="CustomBias"):
         try:

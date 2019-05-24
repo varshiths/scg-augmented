@@ -15,8 +15,8 @@ python models/eval_rels.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-nbg-nob/vgrel-8.tar \
-    -cache cache/sgdet_motifnet-size-predcls-nbg-nob_vgrel-8
+    -ckpt checkpoints/motifnet-size-predcls-nobg-nob/vgrel-5.tar \
+    -cache cache/predcls_motifnet-size-predcls-nobg-nob_vgrel-5
 
 python models/eval_rels.py \
     -m predcls \
@@ -26,8 +26,8 @@ python models/eval_rels.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-nbg-vg-1.0-0.5/vgrel-4.tar \
-    -cache cache/sgdet_motifnet-size-predcls-nbg-vg-1.0-0.5_vgrel-4
+    -ckpt checkpoints/motifnet-size-predcls-nobg-vg-1.0-0.5/vgrel-4.tar \
+    -cache cache/predcls_motifnet-size-predcls-nobg-vg-1.0-0.5_vgrel-4
 
 python models/eval_rels.py \
     -m predcls \
@@ -37,8 +37,8 @@ python models/eval_rels.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-nbg-coco-1.0-0.5/vgrel-8.tar \
-    -cache cache/sgdet_motifnet-size-predcls-nbg-coco-1.0-0.5_vgrel-8
+    -ckpt checkpoints/motifnet-size-predcls-nobg-coco-1.0-0.5/vgrel-4.tar \
+    -cache cache/predcls_motifnet-size-predcls-nobg-coco-1.0-0.5_vgrel-4
 
 python models/eval_rels.py \
     -m predcls \
@@ -48,5 +48,5 @@ python models/eval_rels.py \
     -p 100 \
     -ngpu 1 \
     -test \
-    -ckpt checkpoints/motifnet-size-predcls-nbg-hid-1.0-0.5/vgrel-5.tar \
-    -cache cache/sgdet_motifnet-size-predcls-nbg-hid-1.0-0.5_vgrel-5
+    -ckpt checkpoints/motifnet-size-predcls-nobg-hid-1.0-0.5/vgrel-7.tar \
+    -cache cache/predcls_motifnet-size-predcls-nobg-hid-1.0-0.5_vgrel-7

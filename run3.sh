@@ -13,7 +13,7 @@ python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 18 \
+    -b 16 \
     -p 1000 \
     -ngpu 1 \
     -no_bg \
@@ -25,7 +25,7 @@ python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 18 \
+    -b 16 \
     -p 1000 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
@@ -40,7 +40,7 @@ python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 18 \
+    -b 16 \
     -p 1000 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
@@ -55,7 +55,7 @@ python models/train_rels_tc.py \
     -m predcls \
     -model motifnet \
     -order size \
-    -b 18 \
+    -b 16 \
     -p 1000 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
