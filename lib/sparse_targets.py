@@ -107,6 +107,23 @@ class HIDCorpusBias(FrequencyBias):
         except Exception as e:
             raise Exception("Please generate descriptions_freq.npy using scripts in misc, place it in the data folder and then proceed")
 
+class CustomBias(FrequencyBias):
+    """
+    The goal of this is to provide a simplified way of computing
+    P(predicate | obj1, obj2, img) from a corpus.
+    This class inherits from the FrequencyBias class and alters the 
+    fg_matrix init to load from saved pickle file
+    """
+    def __init__(self, prior_file=None, eps=1e-3):
+        super(CustomBias, self).__init__(eps)
+        self.prior_file = prior_file
+
+    def init_fg_matrix(self, corpus="CustomBias"):
+        try:
+            self.fg_matrix = np.load(self.prior_file) + 1
+        except Exception as e:
+            raise Exception("Please generate {} using scripts in misc and then proceed".format(self.prior_file))
+
 
 if __name__ == '__main__':
     fqb = FrequencyBias()
