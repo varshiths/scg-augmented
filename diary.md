@@ -361,8 +361,8 @@ BG REMOVED FROM OUTPUT LABEL SPACE
 
 | Model | R@20 | R@50 | R@100 |
 | ----- | ---- | ---- | ----- |
-| No Bias | - | - | - |
-| VG Bias | - | - | - |
-| COCO Bias | - | - | - |
-| HID Bias | - | - | - |
+| No Bias | 0.360 | 0.516 | 0.608 |
+| VG Bias | 0.131 | 0.262 | 0.403 |
+| COCO Bias | 0.140 | 0.265 | 0.397 |
+| HID Bias | 0.132 | 0.260 | 0.395 |
 | Published | 0.580 | 0.649 | 0.668 |
