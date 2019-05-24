@@ -42,7 +42,8 @@ class RelModelPrior(RelModel):
                  nl_obj=1, nl_edge=2, use_resnet=False, order='confidence', thresh=0.01,
                  use_proposals=False, pass_in_obj_feats_to_decoder=True,
                  pass_in_obj_feats_to_edge=True, rec_dropout=0.0, use_tanh=True, limit_vision=True, 
-                 prior_weight=1.0, bias_src=None):
+                 prior_weight=1.0, bias_src=None,
+                 no_bg=False):
         """
         :param classes: Object classes
         :param rel_classes: Relationship classes. None if were not using rel mode
@@ -70,6 +71,8 @@ class RelModelPrior(RelModel):
 
         self.prior_weight = prior_weight
         self.bias_src = bias_src
+
+        self.no_bg = no_bg
 
         self.use_vision = use_vision
         self.use_tanh = use_tanh
@@ -225,9 +228,14 @@ class RelModelPrior(RelModel):
             result.obj_preds[rel_inds[:, 2]],
         ), 1))
         result.rel_dists = result.rel_dists + self.prior_weight * prior_indexed
-        _, result.rel_hard_preds = result.rel_dists.max(1)
 
+        # even though this model's parameters are not intended to be updated, it should be used
+        # with self.training set to true when training wit it
         if self.training:
+            if self.no_bg:
+                _, result.rel_hard_preds = result.rel_dists[:, 1:].max(1)
+            else:
+                _, result.rel_hard_preds = result.rel_dists.max(1)
             return result
 
         twod_inds = arange(result.obj_preds.data) * self.num_classes + result.obj_preds.data

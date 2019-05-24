@@ -70,6 +70,7 @@ teacher1 = RelModelPrior(classes=train.ind_to_classes, rel_classes=train.ind_to_
                     limit_vision=conf.limit_vision,
                     prior_weight=conf.prior_weight,
                     bias_src=conf.bias_src,
+                    no_bg=conf.no_bg
                     )
 
 # Freeze the teacher1 and load params
@@ -233,10 +234,29 @@ def train_batch(b, verbose=False):
 
     losses = {}
     losses['class_loss'] = F.cross_entropy(result.rm_obj_dists, result.rm_obj_labels)
-    losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, result.rel_labels[:, -1], weight=nbg_mask)
-    if conf.bias_src:
-        # losses['teacher_loss'] = conf.distillation_weight * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
-        losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, teacher_result.rel_hard_preds, weight=nbg_mask)
+
+    # doing this here to keep RelModel unmodified
+    gold_labels = result.rel_labels[:, -1]
+    if conf.no_bg:
+        gold_labels = gold_labels - 1
+
+    if not conf.nbg:
+
+        no_bg_mask = torch.ne(gold_labels, -1).type(torch.FloatTensor).cuda()
+        indl = (1-cdw) * F.cross_entropy(result.rel_dists, gold_labels, reduce=False)
+        losses['rel_loss'] = torch.sum(indl*no_bg_mask) / torch.sum(no_bg_mask)
+
+        if conf.bias_src:
+            losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, teacher_result.teacher_rel_hard_preds)
+
+    else:
+
+        losses['rel_loss'] = (1-cdw) * F.cross_entropy(result.rel_dists, gold_labels, weight=nbg_mask)
+        if conf.bias_src:
+            # losses['teacher_loss'] = conf.distillation_weight * soft_cross_entropy(result.rel_dists, result.teacher_rel_soft_preds)
+            losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, teacher_result.rel_hard_preds, weight=nbg_mask)
+
+
 
     loss = sum(losses.values())
 
