@@ -52,3 +52,4 @@ The root folder contains the following scripts.
 1. `openie_freq.py`: Takes as input the svo triples file and outputs an `.npy` file. This file is the prior counts as extracted from the svo triples. Set file names at the beginning of the file.
 1. `config.py`: Contains the list of arguments various files in `models` folder take. Also is the location of all paths of various files.
 1. `run*.sh`: Sample runs of training scripts.
+1. `main.sh`: Runs the entire pipeline. Performs the tuple extractions from corpus, and training of models. Look at the file for details.
