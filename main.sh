@@ -97,4 +97,8 @@ python models/train_rels_tc.py \
     -p 1000 \
     -ngpu 1 \
     -ckpt checkpoints/vgdet/vg-24.tar \
-    -save_dir checkpoints/motifnet-size-predcls-nobg-nob
+    -bias_src $PRIOR_FILE \
+    -prior_weight 1.0 \
+    -distillation_weight 0.5 \
+    -save_dir checkpoints/temp
+    # -no_bg \
