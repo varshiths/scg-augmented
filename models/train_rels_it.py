@@ -247,7 +247,7 @@ def train_batch(b, verbose=False):
         losses['rel_loss'] = torch.sum(indl*no_bg_mask) / torch.sum(no_bg_mask)
 
         if conf.bias_src:
-            losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, teacher_result.teacher_rel_hard_preds)
+            losses['teacher_loss'] = cdw * F.cross_entropy(result.rel_dists, teacher_result.rel_hard_preds)
 
     else:
 
